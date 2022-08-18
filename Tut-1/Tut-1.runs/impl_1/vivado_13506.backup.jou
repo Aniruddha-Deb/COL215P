@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Wed Aug 17 17:07:22 2022
+# Process ID: 13506
+# Current directory: /home/os/Desktop/VivadoTutorials/Tut-1/Tut-1.runs/impl_1
+# Command line: vivado -log AND_gate.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source AND_gate.tcl -notrace
+# Log file: /home/os/Desktop/VivadoTutorials/Tut-1/Tut-1.runs/impl_1/AND_gate.vdi
+# Journal file: /home/os/Desktop/VivadoTutorials/Tut-1/Tut-1.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source AND_gate.tcl -notrace

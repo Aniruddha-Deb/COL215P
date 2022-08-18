@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7a35tcpg236-1" LaunchTime="1660736241">
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="BG-DRC" Name="AND_gate.drc"/>
+  <File Type="BG-BGN" Name="AND_gate.bgn"/>
+  <File Type="BITSTR-SYSDEF" Name="AND_gate.sysdef"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="AND_gate.ltx"/>
+  <File Type="BITSTR-MMI" Name="AND_gate.mmi"/>
+  <File Type="BITSTR-BMM" Name="AND_gate_bd.bmm"/>
+  <File Type="BITSTR-NKY" Name="AND_gate.nky"/>
+  <File Type="BITSTR-RBT" Name="AND_gate.rbt"/>
+  <File Type="BITSTR-MSK" Name="AND_gate.msk"/>
+  <File Type="BG-BIN" Name="AND_gate.bin"/>
+  <File Type="BG-BIT" Name="AND_gate.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="AND_gate_bus_skew_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="AND_gate_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="AND_gate_bus_skew_postroute_physopted.rpt"/>
+  <File Type="RDI-RDI" Name="AND_gate.vdi"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="AND_gate_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="AND_gate_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="AND_gate_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="AND_gate_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="AND_gate_postroute_physopt.dcp"/>
+  <File Type="ROUTE-BUS-SKEW" Name="AND_gate_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="AND_gate_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-SIMILARITY" Name="AND_gate_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-TIMING-RPX" Name="AND_gate_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-TIMING-PB" Name="AND_gate_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="AND_gate_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="AND_gate_route_status.pb"/>
+  <File Type="ROUTE-STATUS" Name="AND_gate_route_status.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="AND_gate_power_routed.rpx"/>
+  <File Type="PLACE-UTIL-PB" Name="AND_gate_utilization_placed.pb"/>
+  <File Type="PLACE-UTIL" Name="AND_gate_utilization_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="AND_gate_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-IO" Name="AND_gate_io_placed.rpt"/>
+  <File Type="PLACE-DCP" Name="AND_gate_placed.dcp"/>
+  <File Type="PWROPT-DCP" Name="AND_gate_pwropt.dcp"/>
+  <File Type="OPT-TIMING" Name="AND_gate_timing_summary_opted.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="AND_gate_incremental_reuse_placed.rpt"/>
+  <File Type="OPT-HWDEF" Name="AND_gate.hwdef"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="AND_gate_bus_skew_routed.rpx"/>
+  <File Type="REPORTS-TCL" Name="AND_gate_reports.tcl"/>
+  <File Type="PWROPT-DRC" Name="AND_gate_drc_pwropted.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="AND_gate_bus_skew_routed.pb"/>
+  <File Type="PA-TCL" Name="AND_gate.tcl"/>
+  <File Type="INIT-TIMING" Name="AND_gate_timing_summary_init.rpt"/>
+  <File Type="PLACE-CTRL" Name="AND_gate_control_sets_placed.rpt"/>
+  <File Type="PWROPT-TIMING" Name="AND_gate_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="AND_gate_incremental_reuse_pre_placed.rpt"/>
+  <File Type="OPT-DCP" Name="AND_gate_opt.dcp"/>
+  <File Type="OPT-DRC" Name="AND_gate_drc_opted.rpt"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="AND_gate_methodology_drc_opted.rpt"/>
+  <File Type="PLACE-TIMING" Name="AND_gate_timing_summary_placed.rpt"/>
+  <File Type="ROUTE-DRC" Name="AND_gate_drc_routed.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="AND_gate_postplace_pwropt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="AND_gate_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="AND_gate_drc_routed.pb"/>
+  <File Type="PHYSOPT-DCP" Name="AND_gate_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="AND_gate_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-TIMING" Name="AND_gate_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-PWR" Name="AND_gate_power_routed.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="AND_gate_routed_error.dcp"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="AND_gate_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-DCP" Name="AND_gate_routed.dcp"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="AND_gate_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="AND_gate_routed_bb.dcp"/>
+  <File Type="ROUTE-DRC-RPX" Name="AND_gate_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="AND_gate_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-PWR-SUM" Name="AND_gate_power_summary_routed.pb"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/new/AND_gate.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="AND_gate"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/imports/Tut-1/basys3.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/basys3.xdc"/>
+        <Attr Name="ImportTime" Val="1660734778"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018">
+      <Desc>Default settings for Implementation.</Desc>
+    </StratHandle>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>
