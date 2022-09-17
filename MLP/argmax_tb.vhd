@@ -2,35 +2,37 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;               -- for type conversions
 
-entity max_tb is
-end max_tb;
+entity argmax_tb is
+end argmax_tb;
 
-architecture max_tb_arc of max_tb is
+architecture argmax_tb_arc of argmax_tb is
 
     signal clk: std_logic := '0';
-    signal din: std_logic_vector(15 downto 0) := x"00A0";
-    signal dout: std_logic_vector(15 downto 0);
+    signal din: signed(15 downto 0);
+    signal dout: std_logic_vector(3 downto 0);
     signal en: std_logic := '1';
-    signal rst: std_logic := '0';
+    signal first: std_logic := '1';
 
 begin
 
-    max: entity work.max port map (
+    argmax: entity work.argmax port map (
         clk => clk,
         din => din,
         dout => dout,
         en => en,
-        rst => rst
+        first => first
     );
 
     clk <= not clk after 5 ns;
 
     test:process
     begin
+        din <= x"00A0";
 
         wait for 5 ns;
 
         din <= x"0100";
+        first <= '0';
 
         wait for 10 ns;
 
@@ -44,10 +46,6 @@ begin
 
         en <= '0';
         din <= x"0B00";
-
-        wait for 17 ns;
-
-        rst <= '1';
     end process test;
 
-end max_tb_arc;
+end argmax_tb_arc;
