@@ -1,8 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;        -- for addition & counting
 use ieee.numeric_std.all;               -- for type conversions
-use ieee.math_real.all;                 -- for the ceiling and log constant calculation functions
 
 entity rom is
     generic (

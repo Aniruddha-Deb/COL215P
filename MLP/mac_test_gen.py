@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     for i in range(64):
         rst = np.random.randint(16)
-        n1, n2 = np.random.randint(15), np.random.randint(15)
+        n1, n2 = np.random.randint(255), np.random.randint(255)
 
         a1.append(n1)
         a2.append(n2)

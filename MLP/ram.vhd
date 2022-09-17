@@ -24,7 +24,7 @@ begin
 
     write: process(clk)
     begin
-        if rising_edge(clk) then
+        if rising_edge(clk) and we = '1' then
             ram_arr(to_integer(unsigned(addr))) <= din;
         end if;
     end process write;
