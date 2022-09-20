@@ -12,7 +12,7 @@ entity rom is
         WEIGHT_FILE_NAME : string := "weights_bias.mif"
     );
     port (
-        clk  : in std_logic; -- keep for now, but unused 
+        clk  : in std_logic;
         addr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
         re   : in std_logic;
         dout : out std_logic_vector(DATA_WIDTH-1 downto 0)

@@ -1,13 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;        -- for addition & counting
 use ieee.numeric_std.all;               -- for type conversions
 
 entity led_driver is
     port (
         clk : in std_logic;
         active : in std_logic;
-        A: in std_logic;
+        A: in std_logic_vector(3 downto 0);
         seg: out std_logic_vector(6 downto 0);
         dp: out std_logic;
         an: out std_logic

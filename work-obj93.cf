@@ -1,0 +1,4 @@
+v 4
+file . "comparator.vhd" "9fac0bdd2ab37efb3cb59f255bc70f57314817cb" "20220917123031.322":
+  entity comparator at 1( 0) + 0 on 11;
+  architecture arch of comparator at 17( 286) + 0 on 12;
