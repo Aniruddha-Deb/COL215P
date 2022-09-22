@@ -4,7 +4,6 @@ use ieee.numeric_std.all;               -- for type conversions
 
 entity led_driver is
     port (
-        clk : in std_logic;
         active : in std_logic;
         A: in std_logic_vector(3 downto 0);
         seg: out std_logic_vector(6 downto 0);
