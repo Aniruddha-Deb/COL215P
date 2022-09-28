@@ -1,40 +1,40 @@
 v 4
-file . "controller.vhd" "edd415c1bb9faa6aaee5fda217fcaaf30900631e" "20220928133838.150":
-  entity controller at 1( 0) + 0 on 875;
-  architecture controller_arc of controller at 14( 351) + 0 on 876;
-file . "shifter.vhd" "e3f170ab4914f9fc30f199725eb7034337aefe9e" "20220928133838.059":
-  entity shifter at 1( 0) + 0 on 863;
-  architecture arch of shifter at 19( 285) + 0 on 864;
-file . "argmax_tb.vhd" "99c4ef32700aa77725604c1e50f2e8dea0b030f2" "20220917165855.786":
-  entity argmax_tb at 1( 0) + 0 on 45;
-  architecture argmax_tb_arc of argmax_tb at 8( 144) + 0 on 46;
-file . "ram.vhd" "eca1ab2bf874ae6f25b36d5d37c459112f4130f4" "20220928133838.130":
-  entity ram at 1( 0) + 0 on 873;
-  architecture ram_arc of ram at 16( 376) + 0 on 874;
-file . "mac.vhd" "8278e304bda0a86a9db9255035d1c9c03719fc32" "20220928133838.089":
-  entity mac at 1( 0) + 0 on 867;
-  architecture mac_arc of mac at 17( 411) + 0 on 868;
-file . "reg.vhd" "9a52024ac196111dfe372d21d935ceb0305e8cc2" "20220928133838.045":
-  entity reg at 1( 0) + 0 on 861;
-  architecture reg_arc of reg at 19( 347) + 0 on 862;
-file . "mac_tb.vhd" "a8ab7a38d7c3cb46009e73f75ecff948518e6cda" "20220917133106.223":
-  entity mac_tb at 1( 0) + 0 on 29;
-  architecture mac_tb_arc of mac_tb at 8( 100) + 0 on 30;
-file . "rom.vhd" "2a0ba34f0dc1b374b71e2f5d8bad0b9b0ea8f83a" "20220928133838.117":
-  entity rom at 1( 0) + 0 on 871;
-  architecture rom_arc of rom at 22( 547) + 0 on 872;
-file . "ram_tb.vhd" "5f30e01e777857daa1be8bc5343b335f6b77b28b" "20220917162026.511":
-  entity ram_tb at 1( 0) + 0 on 41;
-  architecture ram_tb_arc of ram_tb at 8( 138) + 0 on 42;
+file . "controller_tb.vhd" "b3418697dade7b487235984524a882cf3bf40656" "20220928164429.538":
+  entity controller_tb at 1( 0) + 0 on 1327;
+  architecture controller_tb_arc of controller_tb at 8( 152) + 0 on 1328;
+file . "led_driver.vhd" "868708f1b6f7ebb4d2e447b50ea15ede5014727a" "20220928164429.478":
+  entity led_driver at 1( 0) + 0 on 1319;
+  architecture led_driver_arc of led_driver at 15( 339) + 0 on 1320;
+file . "comparator.vhd" "0fa247e9b68537e910d7e6014c0051b6fc074525" "20220928164429.451":
+  entity comparator at 1( 0) + 0 on 1315;
+  architecture arch of comparator at 17( 286) + 0 on 1316;
 file . "argmax.vhd" "0fc7e07ca3975b4900a9c484e10e0300157cd2b4" "20220917165823.732":
   entity argmax at 1( 0) + 0 on 43;
   architecture argmax_arc of argmax at 15( 330) + 0 on 44;
-file . "comparator.vhd" "0fa247e9b68537e910d7e6014c0051b6fc074525" "20220928133838.074":
-  entity comparator at 1( 0) + 0 on 865;
-  architecture arch of comparator at 17( 286) + 0 on 866;
-file . "led_driver.vhd" "868708f1b6f7ebb4d2e447b50ea15ede5014727a" "20220928133838.103":
-  entity led_driver at 1( 0) + 0 on 869;
-  architecture led_driver_arc of led_driver at 15( 339) + 0 on 870;
-file . "controller_tb.vhd" "b3418697dade7b487235984524a882cf3bf40656" "20220928133838.165":
-  entity controller_tb at 1( 0) + 0 on 877;
-  architecture controller_tb_arc of controller_tb at 8( 152) + 0 on 878;
+file . "ram_tb.vhd" "5f30e01e777857daa1be8bc5343b335f6b77b28b" "20220917162026.511":
+  entity ram_tb at 1( 0) + 0 on 41;
+  architecture ram_tb_arc of ram_tb at 8( 138) + 0 on 42;
+file . "rom.vhd" "2a0ba34f0dc1b374b71e2f5d8bad0b9b0ea8f83a" "20220928164429.490":
+  entity rom at 1( 0) + 0 on 1321;
+  architecture rom_arc of rom at 22( 547) + 0 on 1322;
+file . "mac_tb.vhd" "a8ab7a38d7c3cb46009e73f75ecff948518e6cda" "20220917133106.223":
+  entity mac_tb at 1( 0) + 0 on 29;
+  architecture mac_tb_arc of mac_tb at 8( 100) + 0 on 30;
+file . "reg.vhd" "9a52024ac196111dfe372d21d935ceb0305e8cc2" "20220928164429.427":
+  entity reg at 1( 0) + 0 on 1311;
+  architecture reg_arc of reg at 19( 347) + 0 on 1312;
+file . "mac.vhd" "8278e304bda0a86a9db9255035d1c9c03719fc32" "20220928164429.465":
+  entity mac at 1( 0) + 0 on 1317;
+  architecture mac_arc of mac at 17( 411) + 0 on 1318;
+file . "ram.vhd" "eca1ab2bf874ae6f25b36d5d37c459112f4130f4" "20220928164429.504":
+  entity ram at 1( 0) + 0 on 1323;
+  architecture ram_arc of ram at 16( 376) + 0 on 1324;
+file . "argmax_tb.vhd" "99c4ef32700aa77725604c1e50f2e8dea0b030f2" "20220917165855.786":
+  entity argmax_tb at 1( 0) + 0 on 45;
+  architecture argmax_tb_arc of argmax_tb at 8( 144) + 0 on 46;
+file . "shifter.vhd" "e3f170ab4914f9fc30f199725eb7034337aefe9e" "20220928164429.439":
+  entity shifter at 1( 0) + 0 on 1313;
+  architecture arch of shifter at 19( 285) + 0 on 1314;
+file . "controller.vhd" "bc5e300fced05978b5e47c467796c12f0bc29d6c" "20220928164429.522":
+  entity controller at 1( 0) + 0 on 1325;
+  architecture controller_arc of controller at 14( 351) + 0 on 1326;

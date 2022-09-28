@@ -26,7 +26,7 @@ architecture controller_arc of controller is
 
     signal ram_addr : unsigned(10 downto 0) := "00000000000";
     signal ram_din  : std_logic_vector(15 downto 0);
-    signal ram_we   : std_logic;
+    signal ram_we   : std_logic := '1';
     signal ram_re   : std_logic;
     signal ram_dout : std_logic_vector(15 downto 0);
 
@@ -141,7 +141,6 @@ begin
     led_A <= argmax_dout;
 
     argmax_din    <= signed(ram_dout);
-    argmax_en     <= '1' when curr_state = ARGMAX else '0';
 
     ram_din       <= std_logic_vector(x"00" & rom_dout) when curr_state = INIT else 
                      -- unsigned extension of 8 bit input read from ROM to RAM
@@ -171,93 +170,72 @@ begin
 
     mac_din2 <= signed(rom_dout);
 
-    -- state transitions need to be unclocked, everything else can be clocked.
-    -- TODO revert back to clocked state transitions, these don't work.
-    curr_state <= LOAD when curr_state = INIT else
-                  LAYER1 when curr_state = LOAD and ram_addr = L0_DIM(10 downto 0)-1 else
-                  LAYER2 when curr_state = LAYER1 and curr_compute_state = STORE and c = c_lim-1 else
-                  ARGMAX when curr_state = LAYER2 and curr_compute_state = STORE and c = c_lim-1 else
-                  DISP when curr_state = ARGMAX and v = 9 else
-                  INIT;
-
-    curr_compute_state <= ACC when (curr_state = LAYER1 or curr_state = LAYER2) and curr_compute_state = MULT and v = r_lim(10 downto 0)-1 else
-                          STORE when (curr_state = LAYER1 or curr_state = LAYER2) and curr_compute_state = ACC else 
-                          MULT;
-
     upd_state : process(clk)
     begin
         if rising_edge(clk) then
             if curr_state = INIT then
-                -- curr_state <= LOAD;
+                curr_state <= LOAD;
                 rom_addr <= rom_addr + 1;
             elsif curr_state = LOAD then
                 if ram_addr = L0_DIM(10 downto 0)-1 then
                     -- transition out
-                    --curr_state <= LAYER1;
-                    ram_addr <= ram_vec_base;
+                    curr_state <= LAYER1;
+                    r <= ONE;
+                    c <= ZERO;
                     v <= ZERO(10 downto 0);
-                    ram_re <= '1';
-                    ram_we <= '0';
 
+                    r_lim <= L0_DIM;
+                    c_lim <= L1_DIM;
+                    rom_wt_base <= W1_ROM_ADDR;
+                    rom_bias_base <= B1_ROM_ADDR;
+                    ram_vec_base <= V0_RAM_ADDR;
+                    ram_write_base <= V1_RAM_ADDR;
+
+                    rom_addr <= W1_ROM_ADDR;
                 else
                     ram_we <= '1';
                     ram_addr <= ram_addr + 1;
-
-                    if rom_addr = L0_DIM-1 then
-                        -- update rom_addr to w_0
-                        r <= ZERO;
-                        c <= ZERO;
-
-                        -- this makes the design independent of constants, so we can
-                        -- effectively reuse the same layer code again and again.
-                        rom_wt_base <= W1_ROM_ADDR;
-                        rom_bias_base <= B1_ROM_ADDR;
-                        ram_vec_base <= V0_RAM_ADDR;
-                        ram_write_base <= V1_RAM_ADDR;
-                        r_lim <= L0_DIM;
-                        c_lim <= L1_DIM;
-
-                        rom_addr <= W1_ROM_ADDR;
-                    else
-                        -- in the state
-                        rom_addr <= rom_addr + 1;
-                    end if;
+                    rom_addr <= rom_addr + 1;
                 end if;
 
             elsif curr_state = LAYER1 then
 
                 if curr_compute_state = MULT then
-                    ram_we <= '0';
-                    ram_re <= '1';
-                    if v = ZERO then
+                    if v = ZERO(10 downto 0) then
+                        ram_we <= '0';
+                        ram_re <= '1';
+                        ram_addr <= ram_vec_base;
                         mac_first <= '1';
                     else
                         mac_first <= '0';
                     end if;
 
-                    if v = r_lim(10 downto 0)-1 then
-                        -- curr_compute_state <= ACC;
-                    elsif r = r_lim-1 then
-                        rom_addr <= rom_bias_base + c;
+                    if v = r_lim(10 downto 0) then
+                        curr_compute_state <= ACC;
                     else
-                        r <= r+1;
                         v <= v+1;
                         ram_addr <= ram_vec_base + v;
-                        rom_addr <= rom_wt_base + r;
+                        if r = r_lim then
+                            rom_addr <= rom_bias_base + c;
+                        else
+                            r <= r+1;
+                            rom_addr <= rom_wt_base + r;
+                        end if;
                     end if;
 
                 elsif curr_compute_state = ACC then
                     shift_en <= '1';
-                    -- curr_compute_state <= STORE;
-                else
-                    -- STORE
-                    ram_addr <= ram_write_base + c(10 downto 0);
                     ram_we <= '1';
                     ram_re <= '0';
-
-                    -- transition now
-                    r <= ZERO;
+                    curr_compute_state <= STORE;
+                    ram_addr <= ram_write_base + c(10 downto 0);
+                else
+                    -- transition to next mult state
+                    r <= ONE;
                     v <= ZERO(10 downto 0);
+                    ram_we <= '0';
+                    ram_re <= '1';
+
                     if (c = c_lim-1) then
                         c <= ZERO;
                         -- state transtion
@@ -267,7 +245,7 @@ begin
                         ram_write_base <= V2_RAM_ADDR;
                         r_lim <= L1_DIM;
                         c_lim <= L2_DIM;
-                        -- curr_state <= LAYER2;
+                        curr_state <= LAYER2;
 
                         rom_addr <= W2_ROM_ADDR;
                     else
@@ -276,76 +254,77 @@ begin
                         rom_addr <= rom_wt_base + r_lim;
                     end if;
 
-                    -- curr_compute_state <= MULT;
+                    curr_compute_state <= MULT;
                 end if;
 
             elsif curr_state = LAYER2 then
 
                 if curr_compute_state = MULT then
-                    ram_we <= '0';
-                    ram_re <= '1';
-                    if v = ZERO then
+                    if v = ZERO(10 downto 0) then
+                        ram_we <= '0';
+                        ram_re <= '1';
+                        ram_addr <= ram_vec_base;
                         mac_first <= '1';
                     else
                         mac_first <= '0';
                     end if;
 
-                    if v = r_lim(10 downto 0)-1 then
-                        -- curr_compute_state <= ACC;
-                    elsif r = r_lim-1 then
-                        rom_addr <= rom_bias_base + c;
+                    if v = r_lim(10 downto 0) then
+                        curr_compute_state <= ACC;
                     else
-                        r <= r+1;
                         v <= v+1;
                         ram_addr <= ram_vec_base + v;
-                        rom_addr <= rom_wt_base + r;
+                        if r = r_lim then
+                            rom_addr <= rom_bias_base + c;
+                        else
+                            r <= r+1;
+                            rom_addr <= rom_wt_base + r;
+                        end if;
                     end if;
 
                 elsif curr_compute_state = ACC then
                     shift_en <= '1';
-                    -- curr_compute_state <= STORE;
-                else
-                    -- STORE
-                    ram_addr <= ram_write_base + c(10 downto 0);
                     ram_we <= '1';
                     ram_re <= '0';
+                    curr_compute_state <= STORE;
+                    ram_addr <= ram_write_base + c(10 downto 0);
+                else
+                    -- transition to next mult state
+                    r <= ONE;
+                    ram_we <= '0';
+                    ram_re <= '1';
 
-                    -- transition now
-                    r <= ZERO;
-                    v <= ZERO(10 downto 0);
                     if (c = c_lim-1) then
                         c <= ZERO;
                         -- state transtion
-                        rom_wt_base <= W2_ROM_ADDR;
-                        rom_bias_base <= B2_ROM_ADDR;
-                        ram_vec_base <= V1_RAM_ADDR;
-                        ram_write_base <= V2_RAM_ADDR;
-                        r_lim <= L1_DIM;
-                        c_lim <= L2_DIM;
-                        -- curr_state <= LAYER2;
-
-                        rom_addr <= W2_ROM_ADDR;
+                        v <= ONE(10 downto 0);
+                        ram_vec_base <= V2_RAM_ADDR;
+                        r_lim <= L2_DIM;
+                        curr_state <= ARGMAX;
+                        argmax_en <= '1';
+                        ram_addr <= V2_RAM_ADDR;
+                        argmax_first <= '1';
                     else
+                        v <= ZERO(10 downto 0);
                         c <= c+1;
                         rom_wt_base <= rom_wt_base + r_lim;
                         rom_addr <= rom_wt_base + r_lim;
                     end if;
 
-                    -- curr_compute_state <= MULT;
+                    curr_compute_state <= MULT;
                 end if;
 
             elsif curr_state = ARGMAX then
-                if v = ZERO(10 downto 0) then
-                    argmax_first <= '1';
-                else 
-                    argmax_first <= '0';
-                end if;
+                argmax_en <= '1';
+                argmax_first <= '0';
 
-                if v = 9 then
-                    -- curr_state <= DISP;
+                if v = 10 then
+                    curr_state <= DISP;
+                    argmax_en <= '0';
                 else
                     v <= v+1;
                 end if;
+                ram_addr <= ram_vec_base + v;
             else
                 -- DISP
                 -- do nothing in this state.
