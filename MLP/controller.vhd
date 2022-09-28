@@ -31,7 +31,7 @@ architecture controller_arc of controller is
 
     signal rom_addr : std_logic_vector(15 downto 0);
     signal rom_re   : std_logic;
-    signal rom_dout : std_logic_vector(8 downto 0);
+    signal rom_dout : std_logic_vector(7 downto 0);
 
     signal cmp_din1: std_logic_vector(15 downto 0);     -- signals to comparator
     signal cmp_din2: std_logic_vector(15 downto 0);
@@ -134,12 +134,12 @@ begin
     );
 
     comparator: entity work.comparator port map (
-        din1 => cmp_din1,
-        din2 => cmp_din2,
-        dout => cmp_dout
+        data_in1 => cmp_din1,
+        data_in2 => cmp_din2,
+        data_out => cmp_dout
     );
 
-    argmax: entity work.argmax port map (
+    my_argmax: entity work.argmax port map (
         clk   => clk,
         din   => argmax_din,
         en    => argmax_en,
@@ -157,22 +157,22 @@ begin
     argmax_din    <= signed(ram_dout) when curr_state = ARGMAX else x"0000"; -- need to change ram address appropriately
     argmax_en     <= '1' when curr_state = ARGMAX else
                      '0'; -- TODO
-    argmax_first  <= ; -- i think we need to adjust this while changing the state, for example if we are changing state from layer-2 to argmax, we would set this to zero, at the next clock cycle if we are already at argmax, we would set it to '0'
-    argmax_dout   <= ; -- why do we need to do anything here, assuming correctness of argmax
+--    argmax_first  <= ; -- i think we need to adjust this while changing the state, for example if we are changing state from layer-2 to argmax, we would set this to zero, at the next clock cycle if we are already at argmax, we would set it to '0'
+--    argmax_dout   <= ; -- why do we need to do anything here, assuming correctness of argmax
 
-    ram_addr      <= std_logic_vector(V0_RAM_ADDR + ram_load_pos) when curr_state = INIT else   -- in the initial state we would be reading from ram and storing the input image starting from V0_BASE_ADDR
+    ram_addr      <= std_logic_vector(V0_RAM_ADDR(10 downto 0) + ram_load_pos(10 downto 0)) when curr_state = INIT else   -- in the initial state we would be reading from ram and storing the input image starting from V0_BASE_ADDR
 
-                     std_logic_vector(V0_RAM_ADDR + ram_read_pos) when curr_state = LAYER1 and curr_compute_state = MULT else -- reading the input image for multiplication (NOTE - MAINTAIN RAM READ POS 1 BEHIND THE CORRESPONDING ROW AND COLUMN IN ROM)
-                     x"0000"                    when curr_state = LAYER1 and curr_compute_state = ACC else  -- no need to read anything from RAM when computing output of accumulator
-                     std_logic_vector(V1_RAM_ADDR + ram_l1_output_pos) when curr_state = LAYER1 and curr_compute_state = STORE else -- storing the computed result (one element of the resultant matrix, after row column multiplication, bias addition, shifting and application of relu)
+                     std_logic_vector(V0_RAM_ADDR(10 downto 0) + ram_read_pos(10 downto 0)) when curr_state = LAYER1 and curr_compute_state = MULT else -- reading the input image for multiplication (NOTE - MAINTAIN RAM READ POS 1 BEHIND THE CORRESPONDING ROW AND COLUMN IN ROM)
+                     "000" & x"00"                when curr_state = LAYER1 and curr_compute_state = ACC else  -- no need to read anything from RAM when computing output of accumulator
+                     std_logic_vector(V1_RAM_ADDR(10 downto 0) + ram_l1_output_pos(10 downto 0)) when curr_state = LAYER1 and curr_compute_state = STORE else -- storing the computed result (one element of the resultant matrix, after row column multiplication, bias addition, shifting and application of relu)
 
-                     std_logic_vector(V1_RAM_ADDR + ram_read_pos) when curr_state = LAYER2 and curr_compute_state = MULT else -- reading the intermediate result of first layer for multiplication (NOTE - MAINTAIN RAM READ POS 1 BEHIND THE CORRESPONDING ROW AND COLUMN IN ROM)
+                     std_logic_vector(V1_RAM_ADDR(10 downto 0) + ram_read_pos(10 downto 0)) when curr_state = LAYER2 and curr_compute_state = MULT else -- reading the intermediate result of first layer for multiplication (NOTE - MAINTAIN RAM READ POS 1 BEHIND THE CORRESPONDING ROW AND COLUMN IN ROM)
                      x"0000"                    when curr_state = LAYER2 and curr_compute_state = ACC else  -- no need to read anything from RAM when computing output of accumulator
-                     std_logic_vector(V2_RAM_ADDR + ram_l2_output_pos) when curr_state = LAYER2 and curr_compute_state = STORE else -- storing the computed result (one element of the resultant matrix, after row column multiplication, bias addition, shifting and application of relu)
+                     std_logic_vector(V2_RAM_ADDR(10 downto 0) + ram_l2_output_pos(10 downto 0)) when curr_state = LAYER2 and curr_compute_state = STORE else -- storing the computed result (one element of the resultant matrix, after row column multiplication, bias addition, shifting and application of relu)
 
-                     std_logic_vector(V2_RAM_ADDR + ram_read_pos) when curr_state = ARGMAX else
+                     std_logic_vector(V2_RAM_ADDR(10 downto 0) + ram_read_pos(10 downto 0)) when curr_state = ARGMAX else
 
-                     x"0000" when curr_state = DISP;
+                     "000" & x"00" ;
 
     ram_din       <= std_logic_vector(x"00" & rom_dout) when curr_state = INIT else -- unsigned extension of 8 bit input read from ROM to RAM
 
@@ -186,7 +186,7 @@ begin
 
                      x"0000" when curr_state = ARGMAX else
 
-                     x"0000" when curr_state = DISP;
+                     x"0000" ;
 
     ram_we        <= '1' when curr_state = INIT else              -- in the initial state of loading we would be writing to RAM
 
@@ -200,7 +200,7 @@ begin
 
                      '0' when curr_state = ARGMAX else
 
-                     '0' when curr_state = DISP;
+                     '0' ;
 
     ram_re        <= '0' when curr_state = INIT else               -- in the initial state we won't be reading anything from the RAM (can we improve this)
 
@@ -214,9 +214,9 @@ begin
 
                      '1' when curr_state = ARGMAX  else
 
-                     '0' when curr_state = DISP;
+                     '0' ;
 
-    ram_dout      <= -- why do we need to assign value to this
+--    ram_dout      <= -- why do we need to assign value to this
 
     rom_addr <= std_logic_vector(IMG_ROM_ADDR + r) when curr_state = INIT else
 
@@ -230,7 +230,7 @@ begin
 
                 x"0000" when curr_state = ARGMAX else
 
-                x"0000" when curr_state = DISP;
+                x"0000" ;
 
 
     rom_re <= '1' when curr_state = INIT else  -- TODO
@@ -245,9 +245,9 @@ begin
 
               '0' when curr_state = ARGMAX else
 
-              '0' when curr_state = DISP;
+              '0' ;
 
-    rom_dout <= ; -- why do we need to do anything here
+--    rom_dout <= ; -- why do we need to do anything here
 
     cmp_din1 <= x"0000" when curr_state = INIT else  -- TODO
 
@@ -261,7 +261,7 @@ begin
 
                 x"0000" when curr_state = ARGMAX else
 
-                x"0000" when curr_state = DISP;
+                x"0000";
 
     cmp_din2 <= x"0000" when curr_state = INIT else  -- TODO
 
@@ -275,9 +275,9 @@ begin
 
                 x"0000" when curr_state = ARGMAX else
 
-                x"0000" when curr_state = DISP;
+                x"0000";
 
-    cmp_dout <= -- why do we need to do anything at this point
+--    cmp_dout <= -- why do we need to do anything at this point
     --cmp_dout <= x"0000" when curr_state = INIT else  -- TODO
     --         <= x"0000" when curr_state = LAYER1 and curr_compute_state = MULT
     --         <= x"0000" when curr_state = LAYER1 and curr_compute_state = ACC  -- in this state also the output from mac would not be correct for comparison, as the mac would take once clock cycle to output the accumulated(one with bias) output
@@ -295,7 +295,7 @@ begin
 
                 '0' when curr_state = ARGMAX else
 
-                '0' when curr_state = DISP;
+                '0';
 
     shift_signed <= '1'; -- this should always be 1
 
@@ -311,14 +311,14 @@ begin
 
                  x"0000" when curr_state = ARGMAX else
 
-                 x"0000" when curr_state = DISP;
+                 x"0000";
 
-    shift_dout <= -- why do we need to do anything here
+--    shift_dout <= -- why do we need to do anything here
     --shift_dout <= x"0000" when curr_state = INIT else  -- TODO
     --         <= x"0000" when curr_state = LAYER1 and curr_compute_state = MULT
     --         <= x"0000" when curr_state = LAYER1 and curr_compute_state = ACC  -- in this state also the output from mac would not be correct for comparison, as the mac would take once clock cycle to output the accumulated(one with bias) output
 
-    mac_first <= ; -- needs to be maintained during FSM transition
+--    mac_first <= ; -- needs to be maintained during FSM transition
     mac_din1 <= signed(ram_dout) when curr_state = LAYER1 and curr_compute_state = MULT else  -- input matrix
                 x"0001" when curr_state = LAYER1 and curr_compute_state = ACC else
                 x"0000" when curr_state = LAYER1 and curr_compute_state = STORE else -- MAC needs to be reset at this point, but this will be done by setting first at apt time
@@ -329,7 +329,7 @@ begin
 
                 x"0000" when curr_state = ARGMAX else
 
-                x"0000" when curr_state = DISP;
+                x"0000" ;
 
     mac_din2 <= signed(rom_dout) when curr_state = LAYER1 and curr_compute_state = MULT else  -- weight from rom
                 signed(rom_dout) when curr_state = LAYER1 and curr_compute_state = ACC else   -- bias from ROM
@@ -343,7 +343,7 @@ begin
 
                 x"0000" when curr_state = DISP;
 
-    mac_dout <= ;  -- why do we need to do anything
+--    mac_dout <= ;  -- why do we need to do anything
 
 
     --r <= r + 1 when curr_state = LAYER1 and curr_compute_state = MULT else
@@ -387,8 +387,8 @@ begin
                 r_lim <= L0_DIM;
                 c_lim <= L1_DIM;
 
-                ram_load_pos <= 0;
-                ram_read_pos <= 0;
+                ram_load_pos <= x"0000";
+                ram_read_pos <= x"0000";
 
                 mac_first <= '0';
                 mac_first_flag_l1 <= '0';
@@ -480,6 +480,7 @@ begin
                     curr_compute_state <= NONE;
                     argmax_first_flag <= '0';
 
+--                    argmax_first <= '1';
                     ram_read_pos <= x"0000";
 
                     -- they won't be needed anymore
@@ -503,7 +504,15 @@ begin
             --else -- curr_compute_state = STORE
             end if;
         elsif curr_state = ARGMAX then
-            if ram_read_pos = L2_DIM then 
+
+            if argmax_first_flag = '0' then
+                argmax_first <= '1';
+                argmax_first_flag <= '0';
+            else
+                argmax_first <= '0';
+            end if;
+
+            if ram_read_pos = L2_DIM then
                 curr_state <= DISP;
                 led_active <= '1';
                 led_A <= argmax_dout;
@@ -511,7 +520,7 @@ begin
                 ram_read_pos <= ram_read_pos + 1;
             end if;
         else -- curr_state is display
-            led_active <= '1'
+            led_active <= '1';
             led_A <= argmax_dout;
             -- just display the result.
         end if;
