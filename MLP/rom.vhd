@@ -13,7 +13,7 @@ entity rom is
     );
     port (
         clk  : in std_logic;
-        addr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+        addr : in unsigned(ADDR_WIDTH-1 downto 0);
         re   : in std_logic;
         dout : out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
@@ -46,11 +46,11 @@ architecture rom_arc of rom is
         return temp_mem;
     end function;
 
-    signal rom_mem : rom_arr := read_rom("imgdata_digit7.mif", "weights_bias.mif");
+    signal rom_mem : rom_arr := read_rom(IMAGE_FILE_NAME, WEIGHT_FILE_NAME);
     
 
 begin
 
-    dout <= rom_mem(to_integer(unsigned(addr))) when re = '1' else x"00";
+    dout <= rom_mem(to_integer(addr)) when re = '1' else x"00";
 
 end rom_arc;

@@ -1,14 +1,12 @@
 GHDL = ghdl
 
-FLAGS = "--std=08"
+SRC = reg.vhd shifter.vhd comparator.vhd mac.vhd led_driver.vhd rom.vhd ram.vhd controller.vhd
+DEP = $(patsubst %.vhd,deps/%.d,$(SRC))
 
-all:
-	$(GHDL) -a $(FLAGS) shifter.vhd shifter_tb.vhd comparator.vhd comparator_tb.vhd reg.vhd register_tb.vhd mac.vhd mac_tb.vhd
-	$(GHDL) -e $(FLAGS) shifter_tb 
-	$(GHDL) -e $(FLAGS) comparator_tb
-	$(GHDL) -e $(FLAGS) register_tb
-	$(GHDL) -e $(FLAGS) mac_tb
-	$(GHDL) -r $(FLAGS) shifter_tb --wave=shifer_tb.ghw --stop-time=20ns 
-	$(GHDL) -r $(FLAGS) comparator_tb --wave=comparator_tb.ghw --stop-time=20ns 
-	$(GHDL) -r $(FLAGS) register_tb --wave=register_tb.ghw --stop-time=20ns 
-	$(GHDL) -r $(FLAGS) mac_tb --wave=mac_tb.ghw --stop-time=20ns
+all: $(DEP)
+	$(GHDL) -a controller_tb.vhd
+	$(GHDL) -e controller_tb
+	$(GHDL) -r controller_tb  --max-stack-alloc=16384 --wave=waves/controller_tb.ghw --stop-time=20000ns
+
+deps/%.d: %.vhd
+	$(GHDL) -a $<
