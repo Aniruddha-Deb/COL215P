@@ -121,11 +121,11 @@ begin
         dout => mac_dout
     );
 
-    --ent_comparator: entity work.comparator port map (
-    --    data_in1 => cmp_din1,
-    --    data_in2 => cmp_din2,
-    --    data_out => cmp_dout
-    --);
+    ent_comparator: entity work.comparator port map (
+        data_in1 => cmp_din1,
+        data_in2 => cmp_din2,
+        data_out => cmp_dout
+    );
 
     ent_argmax: entity work.argmax port map (
         clk   => clk,
