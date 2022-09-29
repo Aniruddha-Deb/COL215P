@@ -8,7 +8,7 @@ entity rom is
         ADDR_WIDTH : integer := 16; 
         DATA_WIDTH : integer := 8; 
         ROM_SIZE : integer := 65535; 
-        IMAGE_FILE_NAME  : string := "imgdata_digit7.mif";
+        IMAGE_FILE_NAME  : string := "data/3.mif";
         WEIGHT_FILE_NAME : string := "weights_bias.mif"
     );
     port (
@@ -51,6 +51,6 @@ architecture rom_arc of rom is
 
 begin
 
-    dout <= rom_mem(to_integer(addr)) when re = '1' else x"00";
+    dout <= rom_mem(to_integer(addr)) when rising_edge(clk) and re = '1';
 
 end rom_arc;

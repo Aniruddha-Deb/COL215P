@@ -1,6 +1,8 @@
 import numpy as np
 import sys
 
+np.seterr(all='raise')
+
 def tc2int(s):
     if (s[0] == '1'):
         return -2**(len(s)-1)+int(s[1:],2)
