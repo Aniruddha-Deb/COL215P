@@ -8,7 +8,7 @@ entity rom is
         ADDR_WIDTH : integer := 16; 
         DATA_WIDTH : integer := 8; 
         ROM_SIZE : integer := 65535; 
-        IMAGE_FILE_NAME  : string := "data/3.mif";
+        IMAGE_FILE_NAME  : string := "data/9.mif";
         WEIGHT_FILE_NAME : string := "weights_bias.mif"
     );
     port (

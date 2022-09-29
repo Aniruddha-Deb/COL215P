@@ -154,9 +154,9 @@ begin
 
     cmp_din2 <= shift_dout;
                 
-    shift_en <= '1' when curr_state = LAYER1 and curr_compute_state = STORE else 
-                '1' when curr_state = LAYER2 and curr_compute_state = STORE else 
-                '0';
+    --shift_en <= '1' when curr_state = LAYER1 and curr_compute_state = STORE else 
+    --            '1' when curr_state = LAYER2 and curr_compute_state = STORE else 
+    --            '0';
 
     shift_signed <= '1'; -- change for unsigned shifts (which we probably won't need)
 
