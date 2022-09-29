@@ -31,7 +31,7 @@ begin
                     ctr <= ctr + 1;
                     if (din > max) then
                         max <= din;
-                        dout <= std_logic_vector(ctr + 1);
+                        dout <= std_logic_vector(ctr);
                     end if;
                 end if;
             end if;

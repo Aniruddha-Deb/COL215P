@@ -121,11 +121,11 @@ begin
         dout => mac_dout
     );
 
-    ent_comparator: entity work.comparator port map (
-        data_in1 => cmp_din1,
-        data_in2 => cmp_din2,
-        data_out => cmp_dout
-    );
+    --ent_comparator: entity work.comparator port map (
+    --    data_in1 => cmp_din1,
+    --    data_in2 => cmp_din2,
+    --    data_out => cmp_dout
+    --);
 
     ent_argmax: entity work.argmax port map (
         clk   => clk,
@@ -142,7 +142,7 @@ begin
 
     argmax_din    <= signed(ram_dout);
 
-    ram_din       <= std_logic_vector(x"00" & rom_dout) when curr_state = INIT else 
+    ram_din       <= std_logic_vector(x"00" & rom_dout) when curr_state = LOAD else 
                      -- unsigned extension of 8 bit input read from ROM to RAM
                      cmp_dout;
 
@@ -291,13 +291,13 @@ begin
                 else
                     -- transition to next mult state
                     r <= ONE;
+                    v <= ZERO(10 downto 0);
                     ram_we <= '0';
                     ram_re <= '1';
 
                     if (c = c_lim-1) then
                         c <= ZERO;
                         -- state transtion
-                        v <= ONE(10 downto 0);
                         ram_vec_base <= V2_RAM_ADDR;
                         r_lim <= L2_DIM;
                         curr_state <= ARGMAX;
@@ -305,7 +305,6 @@ begin
                         ram_addr <= V2_RAM_ADDR;
                         argmax_first <= '1';
                     else
-                        v <= ZERO(10 downto 0);
                         c <= c+1;
                         rom_wt_base <= rom_wt_base + r_lim;
                         rom_addr <= rom_wt_base + r_lim;

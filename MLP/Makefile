@@ -1,6 +1,6 @@
 GHDL = ghdl
 
-SRC = reg.vhd shifter.vhd comparator.vhd mac.vhd led_driver.vhd rom.vhd ram.vhd controller.vhd
+SRC = reg.vhd shifter.vhd argmax.vhd comparator.vhd mac.vhd led_driver.vhd rom.vhd ram.vhd controller.vhd
 DEP = $(patsubst %.vhd,deps/%.d,$(SRC))
 
 all: $(DEP)

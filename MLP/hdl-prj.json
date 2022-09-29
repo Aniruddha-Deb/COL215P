@@ -1,0 +1,13 @@
+{
+  "files": [
+    { "file": "reg.vhd", "language": "vhdl" },
+    { "file": "shifter.vhd", "language": "vhdl" },
+    { "file": "argmax.vhd", "language": "vhdl" },
+    { "file": "comparator.vhd", "language": "vhdl" },
+    { "file": "mac.vhd", "language": "vhdl" },
+    { "file": "led_driver.vhd", "language": "vhdl" },
+    { "file": "rom.vhd", "language": "vhdl" },
+    { "file": "ram.vhd", "language": "vhdl" },
+    { "file": "controller.vhd", "language": "vhdl" }
+  ]
+}
