@@ -122,9 +122,12 @@ def check_legal(kmap_function, binary_list1, binary_list2):
 
 	return True
 
+def transpose(l):
+	return [[row[i] for row in l] for i in range(len(l[0]))]
 
 def is_legal_region(kmap_function, term):
 
+	kmap_function = transpose(kmap_function)
 
 	d1 = len(kmap_function)
 	d2 = len(kmap_function[0])
@@ -132,10 +135,10 @@ def is_legal_region(kmap_function, term):
 	binary_list1 = filter_list(generate_binary_list(d1), term[0: integer_log2(d1)])
 	binary_list2 = filter_list(generate_binary_list(d2), term[integer_log2(d1): ])
 
-	top_r = get_top_row(binary_list1)
-	bottom_r = get_bottom_row(binary_list1)
-	left_c = get_left_col(binary_list2)
-	right_c = get_right_col(binary_list2)
+	top_r = get_top_row(binary_list2)
+	bottom_r = get_bottom_row(binary_list2)
+	left_c = get_left_col(binary_list1)
+	right_c = get_right_col(binary_list1)
 	
 	is_legal = check_legal(kmap_function, binary_list1, binary_list2)
 
@@ -144,6 +147,8 @@ def is_legal_region(kmap_function, term):
 
 def test(kmap_function, root, term):
 	(upper_left, bottom_right, is_legal) = is_legal_region(kmap_function, term)
+	# print(upper_left)
+	# print(bottom_right)
 	top_r, left_c = upper_left
 	bottom_r, right_c = bottom_right
 
@@ -159,11 +164,29 @@ kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
 root = kmap(kmap_function)
 
 # TEST - 1
-term = [0, None, None, 1]
-test(kmap_function, root, term)
+# term = [0, None, None, 1]
+# test(kmap_function, root, term)
 
 
 # TEST - 2
-term = [1, 0, None, 0]
+# term = [1, 0, None, 0]
+# test(kmap_function, root, term)
+
+# TEST - 3
+# term = [1, 1, None, None]
+# test(kmap_function, root, term)
+
+# TEST - 4
+# term = [1, None, None, None]
+# test(kmap_function, root, term)
+
+# TEST - 5
+# term = [1, None, 1, None]
+# test(kmap_function, root, term)
+
+# TEST - 6
+term = [0, None, 1, 1]
 test(kmap_function, root, term)
+
+
 root.mainloop()
