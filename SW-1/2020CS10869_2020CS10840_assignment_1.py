@@ -78,8 +78,8 @@ def position(entry):
 		return 0
 	else :
 		return 1
-def get_top_row(binary_list):
-	if len(binary_list) == 4:
+def get_top_row(binary_list, d):
+	if len(binary_list) == d:
 		return 0 # any row can be top row
 	else:
 		for row, entry in enumerate(binary_list):
@@ -87,17 +87,17 @@ def get_top_row(binary_list):
 				return position(entry)
 		return -1
 
-def get_bottom_row(binary_list):
-	if len(binary_list) == 4:
-		return 3 
+def get_bottom_row(binary_list, d):
+	if len(binary_list) == d:
+		return d-1 
 	else:
 		for row, entry in enumerate(binary_list):
 			if (not (next(entry) in binary_list)):
 				return position(entry)
 		return -1
 
-def get_left_col(binary_list):
-	if len(binary_list) == 4:
+def get_left_col(binary_list, d):
+	if len(binary_list) == d:
 		return 0 # any col can be left col
 	else:
 		for col, entry in enumerate(binary_list):
@@ -105,9 +105,9 @@ def get_left_col(binary_list):
 				return position(entry)
 		return -1
 
-def get_right_col(binary_list):
-	if len(binary_list) == 4:
-		return 3 
+def get_right_col(binary_list, d):
+	if len(binary_list) == d:
+		return d-1 
 	else:
 		for col, entry in enumerate(binary_list):
 			if (not (next(entry) in binary_list)):
@@ -135,10 +135,10 @@ def is_legal_region(kmap_function, term):
 	binary_list1 = filter_list(generate_binary_list(d1), term[0: integer_log2(d1)])
 	binary_list2 = filter_list(generate_binary_list(d2), term[integer_log2(d1): ])
 
-	top_r = get_top_row(binary_list2)
-	bottom_r = get_bottom_row(binary_list2)
-	left_c = get_left_col(binary_list1)
-	right_c = get_right_col(binary_list1)
+	top_r = get_top_row(binary_list2, d2)
+	bottom_r = get_bottom_row(binary_list2, d2)
+	left_c = get_left_col(binary_list1, d1)
+	right_c = get_right_col(binary_list1, d1)
 	
 	is_legal = check_legal(kmap_function, binary_list1, binary_list2)
 
@@ -159,9 +159,8 @@ def test(kmap_function, root, term):
 
 	root.draw_region(top_r, left_c, bottom_r, right_c, color)
 
-
-kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
-root = kmap(kmap_function)
+# kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
+# root = kmap(kmap_function)
 
 # TEST - 1
 # term = [0, None, None, 1]
@@ -185,8 +184,68 @@ root = kmap(kmap_function)
 # test(kmap_function, root, term)
 
 # TEST - 6
-term = [0, None, 1, 1]
-test(kmap_function, root, term)
+# term = [0, None, 1, 1]
+# test(kmap_function, root, term)
 
+
+# 2 variables
+# kmap_function2 = [[0, 1], [1, 1]]
+# root = kmap(kmap_function2)
+
+# TEST - 1
+# term = [0, None]
+# test(kmap_function2, root, term)
+
+
+# TEST - 2
+# term = [1, None]
+# test(kmap_function2, root, term)
+
+# TEST - 3
+# term = [1, 1]
+# test(kmap_function2, root, term)
+
+# TEST - 4
+# term = [1, 0]
+# test(kmap_function2, root, term)
+
+# TEST - 5
+# term = [None, None]
+# test(kmap_function2, root, term)
+# TEST - 6
+# term = [None, 1]
+# test(kmap_function2, root, term)
+
+# 3 variables
+kmap_function3 = [[0, 1, 0, 0], [1, 1, 0, 0]]
+root = kmap(kmap_function3)
+
+# TEST - 1
+# term = [1, None, None]
+# test(kmap_function3, root, term)
+
+# TEST - 2
+# term = [None, 1, None]
+# test(kmap_function3, root, term)
+
+# TEST - 3
+# term = [None, None, None]
+# test(kmap_function3, root, term)
+
+# TEST - 4
+# term = [1, None, 0]
+# test(kmap_function3, root, term)
+
+# TEST - 5
+# term = [1, 0, 1]
+# test(kmap_function3, root, term)
+
+# TEST - 6
+# term = [None, 1, 1]
+# test(kmap_function3, root, term)
+
+# TEST - 7
+# term = [0, 1, None]
+# test(kmap_function3, root, term)
 
 root.mainloop()
