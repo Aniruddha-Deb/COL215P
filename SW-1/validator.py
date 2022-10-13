@@ -64,6 +64,7 @@ def generate_gray_code_list(dimension):
 
     return l1+l2
 
+# preserves order!
 def filter_list(gray_code_list, term):
 	# print(f"Here is the list :- {gray_code_list}")
 	invalid_indices = []
@@ -126,6 +127,7 @@ def position(entry):
 		return 0
 	else :
 		return 1
+
 def get_top_row(binary_list, d):
 	if len(binary_list) == d:
 		return 0 # any row can be top row
@@ -173,25 +175,52 @@ def check_legal(kmap_function, binary_list1, binary_list2):
 def transpose(l):
 	return [[row[i] for row in l] for i in range(len(l[0]))]
 
+def get_top(gcl_map, gcl, filt_list, dim):
+	if len(filt_list) == dim:
+		return 0 # WLOG
+	else:
+		idx = gcl_map[filt_list[0]]
+		while gcl[idx-1] in filt_list:
+			idx -= 1
+
+		if idx < 0:
+			return dim+idx
+		else:
+			return idx
+
+def get_bottom(gcl_map, gcl, filt_list, dim):
+	if len(filt_list) == dim:
+		return dim-1 # WLOG
+	else:
+		idx = gcl_map[filt_list[0]]
+		while gcl[(idx+1)%dim] in filt_list:
+			idx = (idx+1)%dim
+
+		return idx
+
 def is_legal_region(kmap_function, term):
 
 	kmap_function = transpose(kmap_function)
 
-	d1 = len(kmap_function)
-	d2 = len(kmap_function[0])
+	rows = len(kmap_function)
+	cols = len(kmap_function[0])
 
-	binary_list1 = filter_list(generate_gray_code_list(d1), term[0: integer_log2(d1)])
-	binary_list2 = filter_list(generate_gray_code_list(d2), term[integer_log2(d1): ])
+	gcl_rows = generate_gray_code_list(rows)
+	gcl_cols = generate_gray_code_list(cols)
+	gcl_map_rows = {gcl_rows[i]:i for i in range(len(gcl_rows))}
+	gcl_map_cols = {gcl_cols[i]:i for i in range(len(gcl_cols))}
 
-	top_r = get_top_row(binary_list2, d2)
-	bottom_r = get_bottom_row(binary_list2, d2)
-	left_c = get_left_col(binary_list1, d1)
-	right_c = get_right_col(binary_list1, d1)
-	
-	is_legal = check_legal(kmap_function, binary_list1, binary_list2)
+	filt_rows = filter_list(gcl_rows, term[0: integer_log2(rows)])
+	filt_cols = filter_list(gcl_cols, term[integer_log2(rows): ])
+
+	top_r    = get_top(gcl_map_cols, gcl_cols, filt_cols, cols)
+	bottom_r = get_bottom(gcl_map_cols, gcl_cols, filt_cols, cols)
+	left_c   = get_top(gcl_map_rows, gcl_rows, filt_rows, rows)
+	right_c  = get_bottom(gcl_map_rows, gcl_rows, filt_rows, rows)	
+
+	is_legal = check_legal(kmap_function, filt_rows, filt_cols)
 
 	return ((top_r, left_c), (bottom_r, right_c), is_legal)
-
 
 def test(kmap_function, root, term):
 	(upper_left, bottom_right, is_legal) = is_legal_region(kmap_function, term)
