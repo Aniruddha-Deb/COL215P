@@ -7,50 +7,62 @@ def integer_log2(dimension):
 	current_log_val = 0
 
 	while dimension != current_base:
-		current_base 	*= 2
+		current_base    *= 2
 		current_log_val += 1
 	return current_log_val
 
 def xor(a, b):
-	return not ( a == b )
+    if ( a == b ):
+        return '0'
+    else:
+        return '1'
 
 def generate_binary_list(dimension):
 	"""
-	(a,b,c,d). This w
-	"""
+	given a dimension, (a,b,c,d). This will generate 
 	
-	if dimension == 1:
+	Input:
+		integer, denoting how many expressions are there (this is 2^no. of 
+		variables)
+	Returns:
+		A list of all possible binary expressions
+	"""
+
+	print(dimension)
+	if dimension == 2:
 		return ["0", "1"]
-
+	
 	half_list = generate_binary_list(dimension//2)
-
+	
 	binary_list = []
-
+	
 	for i in range(0, dimension//2):
 		binary_list.append("0" + half_list[i])
-
+	
 	for i in range(0, dimension//2):
 		binary_list.append("1" + half_list[i])
-
 
 	return binary_list
 
 def generate_gray_code_list(dimension):
 
-	binary_list = generate_binary_list(dimension)
-	gray_code_list = []
+    if dimension == 2:
+        return ["0", "1"]
 
-	for elem in binary_list:
-		gray_code = ""
-		gray_code += elem[len(elem) - 1]
-		for i in range(len(elem) - 2, -1, -1):
-			gray_code += xor(elem[i-1], elem[i])
+    half_list = generate_gray_code_list(dimension//2)
 
-		gray_code_list.append(gray_code)
+    l1 = []
+    l2 = []
 
+    for i in range(0, dimension//2):
+        l1.append("0"+half_list[i])
 
-	return gray_code_list
+    for i in range(0,dimension//2):
+        l2.append("1"+half_list[i])
 
+    l2.reverse()
+
+    return l1+l2
 
 def filter_list(gray_code_list, term):
 	# print(f"Here is the list :- {gray_code_list}")
@@ -168,8 +180,8 @@ def is_legal_region(kmap_function, term):
 	d1 = len(kmap_function)
 	d2 = len(kmap_function[0])
 
-	binary_list1 = filter_list(generate_gray_code_list(generate_binary_list(d1)), term[0: integer_log2(d1)])
-	binary_list2 = filter_list(generate_gray_code_list(generate_binary_list(d2)), term[integer_log2(d1): ])
+	binary_list1 = filter_list(generate_gray_code_list(d1), term[0: integer_log2(d1)])
+	binary_list2 = filter_list(generate_gray_code_list(d2), term[integer_log2(d1): ])
 
 	top_r = get_top_row(binary_list2, d2)
 	bottom_r = get_bottom_row(binary_list2, d2)
@@ -195,93 +207,94 @@ def test(kmap_function, root, term):
 
 	root.draw_region(top_r, left_c, bottom_r, right_c, color)
 
-kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
-root = kmap(kmap_function)
-
-# TEST - 1
-term = [0, None, None, 1]
-test(kmap_function, root, term)
-
-
-# TEST - 2
-# term = [1, 0, None, 0]
-# test(kmap_function, root, term)
-
-# TEST - 3
-# term = [1, 1, None, None]
-# test(kmap_function, root, term)
-
-# TEST - 4
-# term = [1, None, None, None]
-# test(kmap_function, root, term)
-
-# TEST - 5
-# term = [1, None, 1, None]
-# test(kmap_function, root, term)
-
-# TEST - 6
-# term = [0, None, 1, 1]
-# test(kmap_function, root, term)
-
-
-# 2 variables
-# kmap_function2 = [[0, 1], [1, 1]]
-# root = kmap(kmap_function2)
-
-# TEST - 1
-# term = [0, None]
-# test(kmap_function2, root, term)
-
-
-# TEST - 2
-# term = [1, None]
-# test(kmap_function2, root, term)
-
-# TEST - 3
-# term = [1, 1]
-# test(kmap_function2, root, term)
-
-# TEST - 4
-# term = [1, 0]
-# test(kmap_function2, root, term)
-
-# TEST - 5
-# term = [None, None]
-# test(kmap_function2, root, term)
-# TEST - 6
-# term = [None, 1]
-# test(kmap_function2, root, term)
-
-# 3 variables
-# kmap_function3 = [[0, 1, 0, 0], [1, 1, 0, 0]]
-# root = kmap(kmap_function3)
-
-# TEST - 1
-# term = [1, None, None]
-# test(kmap_function3, root, term)
-
-# TEST - 2
-# term = [None, 1, None]
-# test(kmap_function3, root, term)
-
-# TEST - 3
-# term = [None, None, None]
-# test(kmap_function3, root, term)
-
-# TEST - 4
-# term = [1, None, 0]
-# test(kmap_function3, root, term)
-
-# TEST - 5
-# term = [1, 0, 1]
-# test(kmap_function3, root, term)
-
-# TEST - 6
-# term = [None, 1, 1]
-# test(kmap_function3, root, term)
-
-# TEST - 7
-# term = [0, 1, None]
-# test(kmap_function3, root, term)
-
-root.mainloop()
+if __name__ == "__main__":
+    kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
+    root = kmap(kmap_function)
+    
+    # TEST - 1
+    term = [0, None, None, 1]
+    test(kmap_function, root, term)
+    
+    
+    # TEST - 2
+    # term = [1, 0, None, 0]
+    # test(kmap_function, root, term)
+    
+    # TEST - 3
+    # term = [1, 1, None, None]
+    # test(kmap_function, root, term)
+    
+    # TEST - 4
+    # term = [1, None, None, None]
+    # test(kmap_function, root, term)
+    
+    # TEST - 5
+    # term = [1, None, 1, None]
+    # test(kmap_function, root, term)
+    
+    # TEST - 6
+    # term = [0, None, 1, 1]
+    # test(kmap_function, root, term)
+    
+    
+    # 2 variables
+    # kmap_function2 = [[0, 1], [1, 1]]
+    # root = kmap(kmap_function2)
+    
+    # TEST - 1
+    # term = [0, None]
+    # test(kmap_function2, root, term)
+    
+    
+    # TEST - 2
+    # term = [1, None]
+    # test(kmap_function2, root, term)
+    
+    # TEST - 3
+    # term = [1, 1]
+    # test(kmap_function2, root, term)
+    
+    # TEST - 4
+    # term = [1, 0]
+    # test(kmap_function2, root, term)
+    
+    # TEST - 5
+    # term = [None, None]
+    # test(kmap_function2, root, term)
+    # TEST - 6
+    # term = [None, 1]
+    # test(kmap_function2, root, term)
+    
+    # 3 variables
+    # kmap_function3 = [[0, 1, 0, 0], [1, 1, 0, 0]]
+    # root = kmap(kmap_function3)
+    
+    # TEST - 1
+    # term = [1, None, None]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 2
+    # term = [None, 1, None]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 3
+    # term = [None, None, None]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 4
+    # term = [1, None, 0]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 5
+    # term = [1, 0, 1]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 6
+    # term = [None, 1, 1]
+    # test(kmap_function3, root, term)
+    
+    # TEST - 7
+    # term = [0, 1, None]
+    # test(kmap_function3, root, term)
+    
+    root.mainloop()
