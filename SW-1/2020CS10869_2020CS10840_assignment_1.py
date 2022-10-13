@@ -2,19 +2,61 @@ from K_map_gui_tk import *
 
 
 
+def integer_log2(dimension):
+	current_base    = 1
+	current_log_val = 0
+
+	while dimension != current_base:
+		current_base 	*= 2
+		current_log_val += 1
+	return current_log_val
+
+def xor(a, b):
+	return not ( a == b )
 
 def generate_binary_list(dimension):
-	if dimension == 4:
-		return ["00", "01", "11", "10"]
-	if dimension == 2:
-		return ["0", "1"]	
+	"""
+	(a,b,c,d). This w
+	"""
+	
+	if dimension == 1:
+		return ["0", "1"]
+
+	half_list = generate_binary_list(dimension//2)
+
+	binary_list = []
+
+	for i in range(0, dimension//2):
+		binary_list.append("0" + half_list[i])
+
+	for i in range(0, dimension//2):
+		binary_list.append("1" + half_list[i])
 
 
-def filter_list(binary_list, term):
-	# print(f"Here is the list :- {binary_list}")
+	return binary_list
+
+def generate_gray_code_list(dimension):
+
+	binary_list = generate_binary_list(dimension)
+	gray_code_list = []
+
+	for elem in binary_list:
+		gray_code = ""
+		gray_code += elem[len(elem) - 1]
+		for i in range(len(elem) - 2, -1, -1):
+			gray_code += xor(elem[i-1], elem[i])
+
+		gray_code_list.append(gray_code)
+
+
+	return gray_code_list
+
+
+def filter_list(gray_code_list, term):
+	# print(f"Here is the list :- {gray_code_list}")
 	invalid_indices = []
 	for literal_pos in range(len(term)):
-		for i, entry in enumerate(binary_list):
+		for i, entry in enumerate(gray_code_list):
 			# print(f"Term[literal_pos] :- {term[literal_pos]}")
 			# print(f"Entry {entry}")
 			if term[literal_pos] != None and entry[literal_pos] != str(term[literal_pos]) :
@@ -22,19 +64,13 @@ def filter_list(binary_list, term):
 
 
 	filtered_list = []
-	for index in range(len(binary_list)):
+	for index in range(len(gray_code_list)):
 		if not (index in invalid_indices):
-			filtered_list.append(binary_list[index])	
+			filtered_list.append(gray_code_list[index])	
 
 	return filtered_list
 
-def integer_log2(dimension):
-	if dimension == 1:
-		return 0
-	if dimension == 2:
-		return 1
-	if dimension == 4:
-		return 2
+
 
 def next(entry):
 	if entry == "0":
@@ -132,8 +168,8 @@ def is_legal_region(kmap_function, term):
 	d1 = len(kmap_function)
 	d2 = len(kmap_function[0])
 
-	binary_list1 = filter_list(generate_binary_list(d1), term[0: integer_log2(d1)])
-	binary_list2 = filter_list(generate_binary_list(d2), term[integer_log2(d1): ])
+	binary_list1 = filter_list(generate_gray_code_list(generate_binary_list(d1)), term[0: integer_log2(d1)])
+	binary_list2 = filter_list(generate_gray_code_list(generate_binary_list(d2)), term[integer_log2(d1): ])
 
 	top_r = get_top_row(binary_list2, d2)
 	bottom_r = get_bottom_row(binary_list2, d2)
@@ -159,12 +195,12 @@ def test(kmap_function, root, term):
 
 	root.draw_region(top_r, left_c, bottom_r, right_c, color)
 
-# kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
-# root = kmap(kmap_function)
+kmap_function = [[0,1,1,0], ['x',1,'x',0], [1,0,0,0], [1,'x',0,0]]
+root = kmap(kmap_function)
 
 # TEST - 1
-# term = [0, None, None, 1]
-# test(kmap_function, root, term)
+term = [0, None, None, 1]
+test(kmap_function, root, term)
 
 
 # TEST - 2
@@ -217,8 +253,8 @@ def test(kmap_function, root, term):
 # test(kmap_function2, root, term)
 
 # 3 variables
-kmap_function3 = [[0, 1, 0, 0], [1, 1, 0, 0]]
-root = kmap(kmap_function3)
+# kmap_function3 = [[0, 1, 0, 0], [1, 1, 0, 0]]
+# root = kmap(kmap_function3)
 
 # TEST - 1
 # term = [1, None, None]
