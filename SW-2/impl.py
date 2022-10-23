@@ -133,11 +133,13 @@ def comb_function_expansion(func_TRUE, func_DC):
     # will take O(n^2) at each step.
 
     for t in range(n):
+
         paired_literals = itertools.combinations(literals[len(literals) - 1],2)
         literal_paired = dict.fromkeys(str_list(literals[len(literals) - 1]), False)
         literals.append([])
-        
         for (l1,l2) in paired_literals:
+            if t == 3:
+                print (len(literals[len(literals) - 1]))
             if can_combine(l1,l2):
                 l = combine(l1, l2)
 
@@ -150,8 +152,8 @@ def comb_function_expansion(func_TRUE, func_DC):
         for l in literal_paired:
             if not literal_paired[''.join(l)]:
                 literals[len(literals) - 1].append(l)
-    
-
+            
+        literals = [ literals[1] ]
     # literals[-1] is the set that contains all the combined terms at the end.
     # Now, make the grid with the true literals and get the reverse mapping.
     #
@@ -182,6 +184,6 @@ if __name__ == '__main__':
     # print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
     
     # print(comb_function_expansion(["a'b'c", "a'bc", "ab'c'"], ["a'bc'", "ab'c"]))
-    print(comb_function_expansion(["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"], ["abc'd"]))
+    # print(comb_function_expansion(["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"], ["abc'd"]))
     
 
