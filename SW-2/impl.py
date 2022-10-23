@@ -161,12 +161,12 @@ def comb_function_expansion(func_TRUE, func_DC):
     minimal_terms = {}
 
     for term in original_terms.keys():
-        if is_simple(term):
+        if is_simple(term) and not (term in str_list(dc_terms)):
             minimal_terms[term] = term
 
     for rev_term in original_terms.keys():
         for term in original_terms[rev_term]:
-            if(is_simple(term)):
+            if(is_simple(term)) and (not (term in dc_terms)):
                 if term_size(rev_term) < term_size(minimal_terms[''.join(term)]):
                     minimal_terms[''.join(term)] = rev_term
 
@@ -181,7 +181,7 @@ def comb_function_expansion(func_TRUE, func_DC):
 if __name__ == '__main__':
     # print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
     
-    print(comb_function_expansion(["a'b'c", "a'bc", "ab'c'"], ["a'bc'", "ab'c"]))
-
+    # print(comb_function_expansion(["a'b'c", "a'bc", "ab'c'"], ["a'bc'", "ab'c"]))
+    print(comb_function_expansion(["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"], ["abc'd"]))
     
 
