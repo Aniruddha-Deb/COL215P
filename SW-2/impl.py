@@ -1,3 +1,5 @@
+import itertools
+import math
 
 def get_num_literals(func_TRUE, func_DC):
     seen_chars = set()
@@ -8,33 +10,29 @@ def get_num_literals(func_TRUE, func_DC):
 
     return len(seen_chars)
 
-def get_binary_literal(term):
-    literal = ""
-    idx = 0
+def get_binary_literal(term, n):
+    literal = "-"*n
     for i in range(len(term)):
         if term[i] == "'":
-            literal[-1] ^= (1<<(ord(term[i-1])-97))
+            literal[ord(term[i-1])-97] = "0"
         else:
-            literal[^= (1<<(ord(term[i])-97))
+            literal[ord(term[i])-97] = "1"
     return literal
 
-# def get_binary_literals(term, n):
-#     # will need to generate a list here?
-#     fixed_literals = {}
-#     free_literals = set([chr(i) for i in range(97,97+n)])
-#     for i in range(len(term)):
-#         if term[i] == "'":
-#             fixed_literals[term[i-1]] = 0
-#             # look one back and negate
-#         else:
-#             free_literals.remove(term[i])
-#             fixed_literals[term[i]] = 1
-# 
-#     # now get the length of free literals, bruteforce terms and generate 
-#     # binary terms
-#     literals = []
-#     for i in range(2**len(free_literals)):
-#         literals
+def can_combine(l1, l2):
+    """
+    Returns true if literals l1 and l2 can be combined with each other (all their
+    ignore bits (-) match and they differ by only one bit elsewhere)
+    """
+    # TODO @sachit
+    pass
+
+def combine(l1, l2):
+    """
+    Combines literals l1 and l2. The literals are guaranteed to be combinable.
+    """
+    # TODO @sachit
+    pass
 
 def comb_function_expansion(func_TRUE, func_DC):
     """
@@ -47,14 +45,35 @@ def comb_function_expansion(func_TRUE, func_DC):
         a list of terms: expanded terms in form of boolean literals
     """
     
-    true_literals = set([get_binary_literal(s) for s in func_TRUE])
-    dc_literals = set([get_binary_literal(s) for s in func_DC])
-    literals = true_literals.union(dc_literals)
+    n = get_num_literals(func_TRUE, func_DC)
+    true_literals = set([get_binary_literal(s, n) for s in func_TRUE])
+    dc_literals = set([get_binary_literal(s, n) for s in func_DC])
+    literals = [true_literals.union(dc_literals)]
 
-    reduced_literals = []
-    # start reducing
-    for l in literals:
+    # now, reduce all the literals sequentially using quine-mccluskey
+    # will take O(n^2) at each step.
+    for t in range(n):
+        paired_literals = itertools.combinations(literals[-1],2)
+        literal_paired = dict.fromkeys(literals[-1], False)
+        literals.append(set())
         
+        for (l1,l2) in paired_literals:
+            if can_combine(l1,l2):
+                l = combine(l1, l2)
+                literals[-1].add(l)
+                literal_paired[l1] = True
+                literal_paired[l2] = True
+
+        for l in literal_paired:
+            if not literal_paired[l]:
+                literals[-1].add(l)
+    
+    # literals[-1] is the set that contains all the combined terms at the end.
+    # Now, make the grid with the true literals and get the reverse mapping.
+    #
+    # TODO @sachit
+
+
 
 
 
