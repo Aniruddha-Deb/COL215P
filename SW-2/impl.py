@@ -106,6 +106,24 @@ def is_simple(term):
 
     return True
 
+
+def filter_list(literals):
+
+    new_list = []
+
+    for i in range(0, len(literals)):
+        duplicate = False
+        for j in range(i+1, len(literals)):
+
+            if literals[i] == literals[j]:
+                duplicate = True
+
+        if not duplicate:
+            new_list.append(literals[i])
+
+
+    return new_list
+
 def comb_function_expansion(func_TRUE, func_DC):
     """
     determines the maximum legal region for each term in the K-map function 
@@ -139,7 +157,7 @@ def comb_function_expansion(func_TRUE, func_DC):
         literals.append([])
         for (l1,l2) in paired_literals:
             if t == 3:
-                print (len(literals[len(literals) - 1]))
+                pass
             if can_combine(l1,l2):
                 l = combine(l1, l2)
 
@@ -149,11 +167,13 @@ def comb_function_expansion(func_TRUE, func_DC):
                 literal_paired[''.join(l1)] = True
                 literal_paired[''.join(l2)] = True
 
-        for l in literal_paired:
-            if not literal_paired[''.join(l)]:
-                literals[len(literals) - 1].append(l)
-            
-        literals = [ literals[1] ]
+        for l in literal_paired.keys():
+            if not literal_paired[l]:
+                literals[len(literals) - 1].append([*l])
+        
+
+
+        literals = [ filter_list(literals[len(literals) - 1]) ]
     # literals[-1] is the set that contains all the combined terms at the end.
     # Now, make the grid with the true literals and get the reverse mapping.
     #
@@ -179,9 +199,8 @@ def comb_function_expansion(func_TRUE, func_DC):
 
 
     return minimal_list
-
 if __name__ == '__main__':
-    # print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
+    print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
     
     # print(comb_function_expansion(["a'b'c", "a'bc", "ab'c'"], ["a'bc'", "ab'c"]))
     # print(comb_function_expansion(["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"], ["abc'd"]))
