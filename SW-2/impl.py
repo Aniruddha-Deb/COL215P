@@ -28,6 +28,8 @@ def bin2str(term):
             literal.append(f"{chr(i+97)}'")
         elif term[i] == '1':
             literal.append(f"{chr(i+97)}")
+    if not literal:
+        return '1'
     return ''.join(literal)
 
 def can_combine(l1, l2):
@@ -129,7 +131,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
 
     term_graph = {}
 
-    for t in range(n):
+    for t in range(n+1):
 
         paired_literals = combinations(literals[-1],2)
         # print(list(paired_literals))
@@ -197,5 +199,5 @@ if __name__ == '__main__':
     # print(comb_function_expansion(["ab'", "ab"], ["a'b'"]))
     # print(comb_function_expansion(["a'b'"], []))
     # print(comb_function_expansion(["a'b'", "ab"], []))
-    # print(comb_function_expansion(["a'b'", "a'b", "ab'"], ["ab"]))
+    print(comb_function_expansion(["a'b'", "a'b", "ab'", "ab"], []))
 
