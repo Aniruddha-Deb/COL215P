@@ -1,5 +1,6 @@
 import itertools
 import math
+from itertools import chain, combinations
 
 def get_num_literals(func_TRUE, func_DC):
     seen_chars = set()
@@ -78,6 +79,26 @@ def is_simple(term):
 def filter_list(literals):
     return list(set(literals))
 
+def powerset(iterable):
+    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    s = list(iterable)
+    return chain.from_iterable(set(combinations(s, r)) for r in range(len(s)+1))
+
+def get_expansion_terms(term, exp_term):
+    blank_idxs = [i for i in range(len(exp_term)) if exp_term[i] == '-']
+    t = list(exp_term)
+    terms = set()
+    for g in powerset(blank_idxs):
+        for idx in blank_idxs:
+            if idx in g:
+                t[idx] = '1'
+            else:
+                t[idx] = '0'
+        terms.add(''.join(t))
+
+    terms.remove(term)
+    return terms
+
 def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     """
     determines the maximum legal region for each term in the K-map function 
@@ -91,7 +112,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     original_terms = {}
     
     n = get_num_literals(func_TRUE, func_DC)
-    #print(n)
+    print(f'N = {n}')
     true_terms = [str2bin(s, n) for s in func_TRUE]
     dc_terms = [str2bin(s, n) for s in func_DC]
     literals = [true_terms + dc_terms]
@@ -110,7 +131,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
 
     for t in range(n):
 
-        paired_literals = itertools.combinations(literals[-1],2)
+        paired_literals = combinations(literals[-1],2)
         # print(list(paired_literals))
         term_graph = {**{k: set() for k in literals[-1]}, **term_graph}
         literals.append([])
@@ -132,9 +153,8 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     maximal_regions = []
 
     for i,term in enumerate(true_terms):
-        print(f'N = {i}')
+        print()
         print(f'Current term expansion: {bin2str(term)}')
-        print(f'Legal regions for expansion: ', end='')
         q = [term]
         visited = dict.fromkeys(term_graph.keys(), False)
         maximal_regions.append(term)
@@ -146,11 +166,12 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
                 if not visited[c]:
                     visited[c] = True
                     q.append(c)
-                    print(f"{bin2str(c)} ", end='')
 
+        print(f'Next Legal Terms for Expansion: ', end='')
+        for t in get_expansion_terms(term, maximal_regions[-1]):
+            print(f'{bin2str(t)}', end=' ')
         print()
-        print(f"Final maximal region: {bin2str(maximal_regions[-1])}")
-        print()
+        print(f"Expanded term: {bin2str(maximal_regions[-1])}")
 
     return [bin2str(t) for t in maximal_regions]
 
@@ -158,7 +179,7 @@ if __name__ == '__main__':
 
     # TEST CASES OF SIZE 5
     # GIVEN IN PDF
-    # print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
+    print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
 
     
     # print(comb_function_expansion(["a'bc'd'e", "a'bc'de", "a'bcde'", "abcde'", "a'b'cd'e'"], ["a'bc'de'", "a'bcd'e'", "a'bcd'e'", "ab'cd'e'"]))
