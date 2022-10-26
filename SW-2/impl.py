@@ -155,8 +155,26 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     return [bin2str(t) for t in maximal_regions]
 
 if __name__ == '__main__':
-    print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
+
+    # TEST CASES OF SIZE 5
+    # GIVEN IN PDF
+    # print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
+
+    
+    # print(comb_function_expansion(["a'bc'd'e", "a'bc'de", "a'bcde'", "abcde'", "a'b'cd'e'"], ["a'bc'de'", "a'bcd'e'", "a'bcd'e'", "ab'cd'e'"]))
+
+    # TEST CASES SIZE 4
+    # GIVEN IN PDF
+    # print(comb_function_expansion(["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"], ["abc'd"]))
+
+    # print(comb_function_expansion(["a'b'c'd", "a'bc'd", "a'b'cd'", "ab'c'd"], ["abc'd", "ab'c'd'", "ab'cd", "ab'cd'"]))
+    # print(comb_function_expansion(["a'b'c'd", "a'bc'd", "abc'd", "ab'c'd"], ["a'b'c'd'", "a'bc'd'", "a'bcd", "a'bcd'"]))
+
+    # TEST CASES SIZE 3
+    
     # print(comb_function_expansion(["abc", "a'bc'", "ab'c"], ["ab'c'"]))
-    
-    
+    # print(comb_function_expansion(["ab'", "ab"], ["a'b'"]))
+    # print(comb_function_expansion(["a'b'"], []))
+    # print(comb_function_expansion(["a'b'", "ab"], []))
+    # print(comb_function_expansion(["a'b'", "a'b", "ab'"], ["ab"]))
 
