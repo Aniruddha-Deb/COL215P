@@ -7,7 +7,6 @@ def get_num_literals(func_TRUE, func_DC):
         for c in l:
             if c != "'" and c not in seen_chars:
                 seen_chars.add(c)
-
     return len(seen_chars)
 
 def str2bin(term, n):
@@ -92,9 +91,11 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     original_terms = {}
     
     n = get_num_literals(func_TRUE, func_DC)
+    #print(n)
     true_terms = [str2bin(s, n) for s in func_TRUE]
     dc_terms = [str2bin(s, n) for s in func_DC]
     literals = [true_terms + dc_terms]
+    #print(literals)
 
     for term in true_terms:
         original_terms[''.join(term)] = [term]
@@ -110,10 +111,12 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     for t in range(n):
 
         paired_literals = itertools.combinations(literals[-1],2)
-        term_graph = {**dict.fromkeys(literals[-1], set()), **term_graph}
+        # print(list(paired_literals))
+        term_graph = {**{k: set() for k in literals[-1]}, **term_graph}
         literals.append([])
         for (l1,l2) in paired_literals:
             if can_combine(l1,l2):
+                # print(f"Combining {l1} and {l2}")
                 l = combine(l1, l2)
                 term_graph[l1].add(l)
                 term_graph[l2].add(l)
@@ -153,6 +156,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
 
 if __name__ == '__main__':
     print(comb_function_expansion(["a'b'c'd'e'", "a'b'cd'e", "a'b'cde'", "a'bc'd'e'", "a'bc'd'e", "a'bc'de", "a'bc'de'", "ab'c'd'e'", "ab'cd'e'"], ["abc'd'e'", "abc'd'e", "abc'de", "abc'de'"]))
+    # print(comb_function_expansion(["abc", "a'bc'", "ab'c"], ["ab'c'"]))
     
     
 
