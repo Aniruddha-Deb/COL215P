@@ -124,7 +124,13 @@ def filter_list(literals):
 
     return new_list
 
-def comb_function_expansion(func_TRUE, func_DC):
+def s(literal):
+    return ''.join(literal)
+
+def do_nothing(x):
+    pass
+
+def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     """
     determines the maximum legal region for each term in the K-map function 
 
@@ -135,6 +141,10 @@ def comb_function_expansion(func_TRUE, func_DC):
         a list of terms: expanded terms in form of boolean literals
     """
     original_terms = {}
+    if do_log:
+        log = lambda x: print(x)
+    else:
+        log = lambda x: do_nothing(x)
     
     n = get_num_literals(func_TRUE, func_DC)
     true_terms = [get_binary_literal(s, n) for s in func_TRUE]
@@ -150,6 +160,9 @@ def comb_function_expansion(func_TRUE, func_DC):
     # now, reduce all the literals sequentially using quine-mccluskey
     # will take O(n^2) at each step.
 
+    # mapping of terms to next terms
+    term_graph = {}
+
     for t in range(n):
 
         paired_literals = itertools.combinations(literals[len(literals) - 1],2)
@@ -160,6 +173,12 @@ def comb_function_expansion(func_TRUE, func_DC):
                 pass
             if can_combine(l1,l2):
                 l = combine(l1, l2)
+                if l1 not in term_graph:
+                    term_graph[s(l1)] = []
+                if l2 not in term_graph:
+                    term_graph[s(l2)] = []
+                term_graph[s(l1)].append(l)
+                term_graph[s(l2)].append(l)
 
                 original_terms[''.join(l)] = original_terms[''.join(l1)] + (original_terms[''.join(l2)])
 
@@ -182,11 +201,26 @@ def comb_function_expansion(func_TRUE, func_DC):
 
     minimal_terms = {}
 
+    if log:
+        for i,term in enumerate(true_terms):
+            print(f'N = {i}')
+            print(f'Current term expansion: {term}')
+            print(f'Legal regions for expansion: ', end='')
+            q = queue()
+            t = term
+            while t in term_graph:
+                print(f"Regions under consideration: {term_graph[t]}")
+                t = term_graph[]
+
+            print(f"Final maximal region")
+
     for term in original_terms.keys():
         if is_simple(term) and not (term in str_list(dc_terms)):
             minimal_terms[term] = term
 
-    for rev_term in original_terms.keys():
+    for (i,rev_term) in enumerate(original_terms.keys()):
+        log(f'N = {i}')
+        log(f'Current term expansion: {s(rev_term)}')
         for term in original_terms[rev_term]:
             if(is_simple(term)) and (not (term in dc_terms)):
                 if term_size(rev_term) < term_size(minimal_terms[''.join(term)]):
