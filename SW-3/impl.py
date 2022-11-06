@@ -1,5 +1,3 @@
-import itertools
-import math
 import time
 from itertools import chain, combinations
 
@@ -192,23 +190,10 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
 # CODE FROM ASSIGNMENT - 2
 #######################
 
-def sort_terms(terms):
-    '''
-    to sort the maximal terms based on their lengths
-    '''
-    terms.sort(lambda x,y: cmp(len(x), len(y)))
+def contains(outer_term, inner_term):
 
-
-def can_be_contained(terms, i):
-    '''
-    will check whether ith term can be contained in terms from index 0 - (i-1)
-    '''
-
-
-def contains(term1, term2):
-
-    for i in range(0, len(term1)):
-        if term1[i] != term2[i] and term1[i] != '-':
+    for i in range(0, len(outer_term)):
+        if outer_term[i] != inner_term[i] and outer_term[i] != '-':
             return False
 
     return True
@@ -222,14 +207,18 @@ def opt_function_reduce(func_TRUE, func_DC):
                      a list of minimum size containing terms:  terms in form of boolean literals
     """
 
-    # TODO implement
     n = get_num_literals(func_TRUE, func_DC)
+    # TODO rejig comb_function_expansion to return all pi's
     maximal_terms = comb_function_expansion(func_TRUE, func_DC, do_log=False)
-    
+
+    bin_true_terms = [str2bin(f, n) for f in func_TRUE]
+
+    # print(bin_true_terms)
+    print(set(maximal_terms))
 
     table = {}
     for max_term in maximal_terms:
-        for true_term in str2bin(func_TRUE, n):
+        for true_term in bin_true_terms:
             if contains(max_term, true_term):
                 table[(max_term, true_term)] = True
             else:
@@ -238,29 +227,62 @@ def opt_function_reduce(func_TRUE, func_DC):
     ## finding essential prime implicants
 
 
-    essential_prime_implicants = []
+    essential_prime_implicants = set()
+    all_prime_implicants = set(maximal_terms)
 
-    for true_term in str2bin(func_TRUE, n):
+    for true_term in bin_true_terms:
         count = 0
+        epi = None
         for max_term in maximal_terms:
             if table[(max_term, true_term)] == True:
                 count += 1
+                epi = max_term
         if count == 1:
-            essential_prime_implicants.append(max_term)
+            essential_prime_implicants.add(epi)
 
     terms_covered_count = 0
 
-    covered = {}
+    covered = set()
 
     for epi in essential_prime_implicants:
-        for true_term in str2bin(func_TRUE, n):
-            if table[(max_term, true_term)] == True:
-                covered[true_term] = True
+        for true_term in bin_true_terms:
+            if table[(epi, true_term)] == True:
+                covered.add(true_term)
 
-    for true_term in str2bin(func_TRUE, n):
-        if not true_term in covered.keys():
-            ## I DON'T SEE ANY OPTION OTHER THAN HIT AND TRIAL AT THIS POINT OF TIME 
+    print(f"Covered so far: {covered}")
+
+    uncovered_terms = set(bin_true_terms).difference(covered)
+
+    # bruteforce will generate a powerset of the leftover prime implicants, and 
+    # then go over them in a sorted manner to see which is the smallest 
+    # powerset that includes all the leftover terms.
+
+    uncovered_prime_implicants = all_prime_implicants.difference(essential_prime_implicants)
+
+    for pi_set in powerset(uncovered_prime_implicants):
+        covered_len = 0
+        for term in uncovered_terms:
+            for pi in pi_set:
+                if contains(pi, term):
+                    covered_len += 1
+        if covered_len == len(uncovered_terms):
+            # break, as we've found the set of PI's that covers all the leftover
+            # ones 
+            for pi in pi_set:
+                essential_prime_implicants.add(pi)
 
 
-    
-    pass
+    for i, true_term in enumerate(uncovered_terms):
+        print(f"Term {i+1}: {true_term}")
+        for epi in essential_prime_implicants:
+            if contains(epi, true_term):
+                print(f"Covering region: {epi}")
+
+    return [bin2str(a) for a in essential_prime_implicants]
+
+if __name__ == "__main__":
+    func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
+    func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
+
+    print(opt_function_reduce(func_TRUE, func_DC))
+
