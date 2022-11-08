@@ -276,8 +276,29 @@ def opt_function_reduce(func_TRUE, func_DC):
     return [bin2str(a) for a in essential_prime_implicants]
 
 if __name__ == "__main__":
+
+    # SAMPLE TEST CASE 1
+    # func_TRUE = ["a'bc'd'", "abc'd'", "a'b'c'd", "a'bc'd", "a'b'cd"]
+    # func_DC = ["abc'd"]
+
+
+    # SAMPLE TEST CASE 2
     func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
     func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
+
+
+    # SAMPLE TEST CASE 3
+
+    # func_TRUE = ["a'b'c", "a'bc", "a'bc'", "ab'c'"]
+    # func_DC = ["abc'"]
+
+    # SAMPLE TEST CASE 4
+
+    # func_TRUE = ["a'b'c'd'e'", "a'bc'd'e'", "abc'd'e'", "ab'c'd'e'", "abc'de'", "abcde'",
+    # "a'bcde'", "a'bcd'e'", "abcd'e'", "a'bc'de", "abc'de", "abcde",
+    # "a'bcde", "a'bcd'e", "abcd'e", "a'b'cd'e", "ab'cd'e"]
+    # func_DC = []
+
 
     print(opt_function_reduce(func_TRUE, func_DC))
 
