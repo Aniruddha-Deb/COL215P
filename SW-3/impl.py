@@ -137,7 +137,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
         # print(list(paired_literals))
         term_graph = {**{k: set() for k in literals}, **term_graph}
         
-        print(f"1 {time.time() - s_time}")
+        # print(f"1 {time.time() - s_time}")
         s_time = time.time()
         literals = []
         i = 0
@@ -150,42 +150,33 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
 
                 literals.append(l)
 
-        print(i)
-        print(f"2 {time.time() - s_time}")
+        # print(i)
+        # print(f"2 {time.time() - s_time}")
         s_time = time.time()
         literals = filter_list(literals)
 
-        print(f"3 {time.time() - s_time}")
-        print(f"Current length of literals:- {len(literals)}")
+        # print(f"3 {time.time() - s_time}")
+        # print(f"Current length of literals:- {len(literals)}")
     # print(term_graph)
 
     # Now, make the grid with the true literals and get the reverse mapping.
 
     maximal_regions = []
 
-    for i,term in enumerate(true_terms):
-        print()
-        print(f'Current term expansion: {bin2str(term)}')
+    visited = dict.fromkeys(term_graph.keys(), False)
+    for term in true_terms:
         q = [term]
-        visited = dict.fromkeys(term_graph.keys(), False)
-        maximal_regions.append(term)
         while q:
             t = q.pop(0)
-            if term_size(t) < term_size(maximal_regions[-1]):
-                maximal_regions[-1] = t
+            if not term_graph[t]:
+                # maximal region 
+                maximal_regions.append(t)
             for c in term_graph[t]:
                 if not visited[c]:
                     visited[c] = True
                     q.append(c)
 
-        print(f'Next Legal Terms for Expansion: ', end='')
-        for t in get_expansion_terms(term, maximal_regions[-1]):
-            print(f'{bin2str(t)}', end=' ')
-        print()
-        print(f"Expanded term: {bin2str(maximal_regions[-1])}")
-
     return maximal_regions
-
 
 # CODE FROM ASSIGNMENT - 2
 #######################
@@ -209,12 +200,12 @@ def opt_function_reduce(func_TRUE, func_DC):
 
     n = get_num_literals(func_TRUE, func_DC)
     # TODO rejig comb_function_expansion to return all pi's
-    maximal_terms = comb_function_expansion(func_TRUE, func_DC, do_log=False)
+    maximal_terms = set(comb_function_expansion(func_TRUE, func_DC, do_log=False))
 
     bin_true_terms = [str2bin(f, n) for f in func_TRUE]
 
     # print(bin_true_terms)
-    print(set(maximal_terms))
+    print(f"Maximal regions: {maximal_terms}")
 
     table = {}
     for max_term in maximal_terms:
@@ -250,6 +241,8 @@ def opt_function_reduce(func_TRUE, func_DC):
                 covered.add(true_term)
 
     print(f"Covered so far: {covered}")
+    print(f"EPI's so far: {essential_prime_implicants}")
+    print()
 
     uncovered_terms = set(bin_true_terms).difference(covered)
 
@@ -270,13 +263,15 @@ def opt_function_reduce(func_TRUE, func_DC):
             # ones 
             for pi in pi_set:
                 essential_prime_implicants.add(pi)
+            break
 
 
     for i, true_term in enumerate(uncovered_terms):
-        print(f"Term {i+1}: {true_term}")
+        print(f"Term {i+1}: {bin2str(true_term)}")
         for epi in essential_prime_implicants:
             if contains(epi, true_term):
-                print(f"Covering region: {epi}")
+                print(f"Covering region: {bin2str(epi)}")
+        print()
 
     return [bin2str(a) for a in essential_prime_implicants]
 
