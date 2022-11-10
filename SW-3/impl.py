@@ -300,5 +300,32 @@ if __name__ == "__main__":
     # func_DC = []
 
 
-    print(opt_function_reduce(func_TRUE, func_DC))
+    # SIZE 6
 
+    # func_TRUE = ["abcdef", "a'bcdef", "ab'cdef", "a'b'cdef", "abc'd'ef", "abc'def", "abcd'ef"]
+    # func_DC   = ["ab'c'def", "a'b'c'd'e'f'"]
+
+
+    # SIZE 8
+
+
+    # func_TRUE = ["a'b'c'd'e'fgh", "a'bc'd'e'fgh", "abc'd'e'fgh", "ab'c'd'e'fgh", "abc'de'fgh", "abcde'fgh",
+    # "a'bcde'fgh", "a'bcd'e'fgh", "abcd'e'fgh", "a'bc'defgh", "abc'defgh", "abcdefgh",
+    # "a'bcdefgh", "a'bcd'efgh", "abcd'efgh", "a'b'cd'efgh", "ab'cd'efgh"]
+    # func_DC = ["a'b'c'd'e'fg'h", "a'bc'd'e'f'gh", "abc'd'e'f'g'h'", "ab'c'd'e'fg'h'"]    
+
+
+
+
+    # SIZE 10
+
+    func_TRUE = ["abc'defghij", "abc'd'efghij", "abc'defg'h'ij", "ab'c'd'efg'hij", "ab'cdefgh'ij"] 
+    func_DC = ["a'b'c'defgh'ij", "a'b'cdefghi'j"]
+
+    # SIZE 15
+
+    # func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
+    # func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
+
+
+    print(opt_function_reduce(func_TRUE, func_DC))
