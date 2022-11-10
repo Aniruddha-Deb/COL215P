@@ -266,7 +266,7 @@ def opt_function_reduce(func_TRUE, func_DC):
             break
 
 
-    for i, true_term in enumerate(uncovered_terms):
+    for i, true_term in enumerate(bin_true_terms):
         print(f"Term {i+1}: {bin2str(true_term)}")
         for epi in essential_prime_implicants:
             if contains(epi, true_term):
