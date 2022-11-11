@@ -117,7 +117,7 @@ def comb_function_expansion(func_TRUE, func_DC, do_log=False):
     """
     
     n = get_num_literals(func_TRUE, func_DC)
-    print(f'N = {n}')
+    # print(f'N = {n}')
     true_terms = [str2bin(s, n) for s in func_TRUE]
     dc_terms = [str2bin(s, n) for s in func_DC]
     literals = true_terms + dc_terms
@@ -201,12 +201,11 @@ def opt_function_reduce(func_TRUE, func_DC):
     n = get_num_literals(func_TRUE, func_DC)
     # TODO rejig comb_function_expansion to return all pi's
     maximal_terms = set(comb_function_expansion(func_TRUE, func_DC, do_log=False))
-
     bin_true_terms = [str2bin(f, n) for f in func_TRUE]
-
+    # maximal_bin_true_terms = 
     # print(bin_true_terms)
-    print(f"Maximal regions: {maximal_terms}")
-
+    print(f"Maximal regions: {[bin2str(f) for f in maximal_terms]}")
+    
     table = {}
     for max_term in maximal_terms:
         for true_term in bin_true_terms:
@@ -266,13 +265,28 @@ def opt_function_reduce(func_TRUE, func_DC):
             break
 
 
-    for i, true_term in enumerate(bin_true_terms):
-        print(f"Term {i+1}: {bin2str(true_term)}")
-        for epi in essential_prime_implicants:
-            if contains(epi, true_term):
-                print(f"Covering region: {bin2str(epi)}")
-        print()
+    # for i, true_term in enumerate(bin_true_terms):
+    #     print(f"Term {i+1}: {bin2str(true_term)}")
+    #     for epi in essential_prime_implicants:
+    #         if contains(epi, true_term):
+    #             print(f"Covering region: {bin2str(epi)}")
+    #     print()
+    # deleted_terms = []
 
+    deleted_terms = []
+    for term in maximal_terms:
+        if not term in essential_prime_implicants:
+            deleted_terms.append(term)
+
+    # print(f"Deleted terms are :- {deleted_terms}")
+
+    for dt in deleted_terms:
+        print(f"The covering region/term to be deleted {bin2str(dt)}")
+        counter = 1
+        for true_term in bin_true_terms:
+            if contains(dt, true_term):
+                print(f"Term {counter}: {bin2str(true_term)} lies in this region")
+                counter += 1
     return [bin2str(a) for a in essential_prime_implicants]
 
 if __name__ == "__main__":
@@ -283,8 +297,8 @@ if __name__ == "__main__":
 
 
     # SAMPLE TEST CASE 2
-    func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
-    func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
+    # func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
+    # func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
 
 
     # SAMPLE TEST CASE 3
@@ -294,10 +308,10 @@ if __name__ == "__main__":
 
     # SAMPLE TEST CASE 4
 
-    # func_TRUE = ["a'b'c'd'e'", "a'bc'd'e'", "abc'd'e'", "ab'c'd'e'", "abc'de'", "abcde'",
-    # "a'bcde'", "a'bcd'e'", "abcd'e'", "a'bc'de", "abc'de", "abcde",
-    # "a'bcde", "a'bcd'e", "abcd'e", "a'b'cd'e", "ab'cd'e"]
-    # func_DC = []
+    func_TRUE = ["a'b'c'd'e'", "a'bc'd'e'", "abc'd'e'", "ab'c'd'e'", "abc'de'", "abcde'",
+    "a'bcde'", "a'bcd'e'", "abcd'e'", "a'bc'de", "abc'de", "abcde",
+    "a'bcde", "a'bcd'e", "abcd'e", "a'b'cd'e", "ab'cd'e"]
+    func_DC = []
 
 
     # SIZE 6
@@ -319,8 +333,8 @@ if __name__ == "__main__":
 
     # SIZE 10
 
-    func_TRUE = ["abc'defghij", "abc'd'efghij", "abc'defg'h'ij", "ab'c'd'efg'hij", "ab'cdefgh'ij"] 
-    func_DC = ["a'b'c'defgh'ij", "a'b'cdefghi'j"]
+    # func_TRUE = ["abc'defghij", "abc'd'efghij", "abc'defg'h'ij", "ab'c'd'efg'hij", "ab'cdefgh'ij"] 
+    # func_DC = ["a'b'c'defgh'ij", "a'b'cdefghi'j"]
 
     # SIZE 15
 
