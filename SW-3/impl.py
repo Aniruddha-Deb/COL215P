@@ -204,7 +204,7 @@ def opt_function_reduce(func_TRUE, func_DC):
     bin_true_terms = [str2bin(f, n) for f in func_TRUE]
     # maximal_bin_true_terms = 
     # print(bin_true_terms)
-    print(f"Maximal regions: {[bin2str(f) for f in maximal_terms]}")
+    # print(f"Maximal regions: {[bin2str(f) for f in maximal_terms]}")
     
     table = {}
     for max_term in maximal_terms:
@@ -239,9 +239,9 @@ def opt_function_reduce(func_TRUE, func_DC):
             if table[(epi, true_term)] == True:
                 covered.add(true_term)
 
-    print(f"Covered so far: {covered}")
-    print(f"EPI's so far: {essential_prime_implicants}")
-    print()
+    # print(f"Covered so far: {covered}")
+    # print(f"EPI's so far: {essential_prime_implicants}")
+    # print()
 
     uncovered_terms = set(bin_true_terms).difference(covered)
 
@@ -308,10 +308,10 @@ if __name__ == "__main__":
 
     # SAMPLE TEST CASE 4
 
-    func_TRUE = ["a'b'c'd'e'", "a'bc'd'e'", "abc'd'e'", "ab'c'd'e'", "abc'de'", "abcde'",
-    "a'bcde'", "a'bcd'e'", "abcd'e'", "a'bc'de", "abc'de", "abcde",
-    "a'bcde", "a'bcd'e", "abcd'e", "a'b'cd'e", "ab'cd'e"]
-    func_DC = []
+    # func_TRUE = ["a'b'c'd'e'", "a'bc'd'e'", "abc'd'e'", "ab'c'd'e'", "abc'de'", "abcde'",
+    # "a'bcde'", "a'bcd'e'", "abcd'e'", "a'bc'de", "abc'de", "abcde",
+    # "a'bcde", "a'bcd'e", "abcd'e", "a'b'cd'e", "ab'cd'e"]
+    # func_DC = []
 
 
     # SIZE 6
@@ -334,12 +334,12 @@ if __name__ == "__main__":
     # SIZE 10
 
     # func_TRUE = ["abc'defghij", "abc'd'efghij", "abc'defg'h'ij", "ab'c'd'efg'hij", "ab'cdefgh'ij"] 
-    # func_DC = ["a'b'c'defgh'ij", "a'b'cdefghi'j"]
+    # func_DC = ["a'b'c'defgh'ij", "a'b'cdefghi'j", "abc'd'e'fghij", "abc'de'fghij", "abc'de'f'ghij", "abc'def'ghij", "ab'c'd'e'fg'hij", "ab'cd'efg'hij", "ab'cd'e'fg'hij", "a'bcdefgh'ij", "a'b'cdefgh'ij", "abcdefgh'ij"]
 
     # SIZE 15
 
-    # func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
-    # func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
+    func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
+    func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
 
 
     print(opt_function_reduce(func_TRUE, func_DC))
