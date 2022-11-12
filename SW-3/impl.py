@@ -220,10 +220,10 @@ def cover_approximate(prime_implicants, terms):
                 if contains(pi, t):
                     pi_uncovered[pi].add(t)
             
-        sorted_pi = sorted(pi_uncovered.items(), key= lambda x: len(pi_uncovered[x]))
+        sorted_pi = sorted(pi_uncovered.keys(), key= lambda x: len(pi_uncovered[x]))
         max_sorted_pi = sorted_pi[-1]
         if len(pi_uncovered[max_sorted_pi]) != 0:
-            min_implicants.add(sorted_pi)
+            min_implicants.add(max_sorted_pi)
             covered_terms = covered_terms.union(pi_uncovered[max_sorted_pi])
             uncovered_terms = uncovered_terms.difference(pi_uncovered[max_sorted_pi])
             prime_implicants.remove(max_sorted_pi)
@@ -330,8 +330,8 @@ if __name__ == "__main__":
 
 
     # SAMPLE TEST CASE 2
-    # func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
-    # func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
+    func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
+    func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
 
 
     # SAMPLE TEST CASE 3
@@ -371,8 +371,8 @@ if __name__ == "__main__":
 
     # SIZE 15
 
-    func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
-    func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
+    # func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
+    # func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
 
 
     print(opt_function_reduce(func_TRUE, func_DC))
