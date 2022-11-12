@@ -189,6 +189,47 @@ def contains(outer_term, inner_term):
 
     return True
 
+def cover_optimal(uncovered_prime_implicants, uncovered_terms):
+    for pi_set in powerset(uncovered_prime_implicants):
+        covered_len = 0
+        for term in uncovered_terms:
+            for pi in pi_set:
+                if contains(pi, term):
+                    covered_len += 1
+        if covered_len == len(uncovered_terms):
+            # break, as we've found the set of PI's that covers all the leftover
+            # ones 
+            return set(pi_set)
+    return None
+
+# greedily choose set that covers the most elements
+def cover_approximate(prime_implicants, terms):
+
+    min_implicants = set()
+    prime_implicants = set(prime_implicants)
+
+    # track covered terms and unco
+    uncovered_terms = set(terms)
+    covered_terms = set()
+
+    while len(uncovered_terms) != 0:
+        pi_uncovered = {}
+        for pi in prime_implicants:
+            pi_uncovered[pi] = set()
+            for t in uncovered_terms:
+                if contains(pi, t):
+                    pi_uncovered[pi].add(t)
+            
+        sorted_pi = sorted(pi_uncovered.items(), key= lambda x: len(pi_uncovered[x]))
+        max_sorted_pi = sorted_pi[-1]
+        if len(pi_uncovered[max_sorted_pi]) != 0:
+            min_implicants.add(sorted_pi)
+            covered_terms = covered_terms.union(pi_uncovered[max_sorted_pi])
+            uncovered_terms = uncovered_terms.difference(pi_uncovered[max_sorted_pi])
+            prime_implicants.remove(max_sorted_pi)
+
+    return min_implicants
+
 
 def opt_function_reduce(func_TRUE, func_DC):
     """
@@ -251,19 +292,11 @@ def opt_function_reduce(func_TRUE, func_DC):
 
     uncovered_prime_implicants = all_prime_implicants.difference(essential_prime_implicants)
 
-    for pi_set in powerset(uncovered_prime_implicants):
-        covered_len = 0
-        for term in uncovered_terms:
-            for pi in pi_set:
-                if contains(pi, term):
-                    covered_len += 1
-        if covered_len == len(uncovered_terms):
-            # break, as we've found the set of PI's that covers all the leftover
-            # ones 
-            for pi in pi_set:
-                essential_prime_implicants.add(pi)
-            break
+    uncovered_cover = cover_approximate(uncovered_prime_implicants, uncovered_terms)
 
+    if uncovered_cover is not None:
+        for pi in uncovered_cover:
+            essential_prime_implicants.add(pi)
 
     # for i, true_term in enumerate(bin_true_terms):
     #     print(f"Term {i+1}: {bin2str(true_term)}")
