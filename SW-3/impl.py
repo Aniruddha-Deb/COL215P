@@ -330,8 +330,8 @@ if __name__ == "__main__":
 
 
     # SAMPLE TEST CASE 2
-    func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
-    func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
+    # func_TRUE = ["a'b'c'd", "a'b'cd", "a'bc'd", "abc'd'", "abc'd", "ab'c'd'", "ab'cd"] 
+    # func_DC = ["a'bc'd'", "a'bcd", "ab'c'd"]
 
 
     # SAMPLE TEST CASE 3
@@ -371,8 +371,8 @@ if __name__ == "__main__":
 
     # SIZE 15
 
-    # func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
-    # func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
+    func_TRUE = ["a'bc'defgh'i'jklm", "a'bc'defgh'i'jkl'm'", "a'bc'defgh'i'jk'l'm", "a'bc'defgh'i'jk'l'm'", "a'bc'defgh'i'jk'lm'", "a'bc'defgh'i'jk'lm", "a'bc'defgh'i'jkl'm", "a'bc'defgh'i'jklm'", "a'bc'defgh'ijklm", "a'bc'defghi'jklm", "a'bc'defghijklm"] 
+    func_DC = ["a'bc'de'fg'h'ijklm", "a'bc'de'fghi'jklm", "a'bc'defg'hijklm", "a'bc'd'efgh'ijklm'", "a'bc'defghi'jklm'", "a'b'c'defghij'klm'"]
 
 
     print(opt_function_reduce(func_TRUE, func_DC))
